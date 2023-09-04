@@ -1,5 +1,5 @@
-import smtplib
 
+import smtplib
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import os
 from oauth2client.service_account import ServiceAccountCredentials
@@ -39,8 +39,11 @@ razorpay_key_secret = 'QhcRWMasciGh2iZUhNe6m786'
 razorpay_client = razorpay.Client(auth=(razorpay_key_id, razorpay_key_secret))
 
 # Your Cc avenue API credentials
+
+
 workingKey = "1ED377C8D4316E3330503FC2188622A1"
 accessCode = "AVOF80KF60BS22FOSB"
+
 
 
 # Receipt Number Generation
