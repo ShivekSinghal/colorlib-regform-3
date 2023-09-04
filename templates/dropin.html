@@ -10,7 +10,7 @@
     <meta name="keywords" content="Colorlib Templates">
 
     <!-- Title Page-->
-    <title>Registration Form</title>
+    <title>Drop In Form</title>
 
     <!-- Icons font CSS-->
     <link href="{{ url_for('static', filename='css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
@@ -149,7 +149,6 @@
         var email = document.forms[0].elements["email"].value;
         var phone = document.forms[0].elements["phone"].value;
         var selectedStudio = document.forms[0].elements["Studio"].value;
-        var promo = document.forms[0].elements["Studio"].value;
 
         var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         var phonePattern = /^\d{10}$/;
@@ -174,24 +173,8 @@
             return false;
         }
 
-        if ({{promo_code}} != "") {
-            alert({{promo_message}});
-            return false;
-        }
-
-
-
-
-
-
         return true; // Form submission will proceed if all validations pass
     }
-    {% if promo_message %}
-    // Display an alert box with the promo message
-        alert("{{ promo_message }}");
-    {% endif %}
-
-
 
 
 
@@ -206,8 +189,8 @@
                 <div class="card-heading"></div>
 
                 <div class="card-body" >
-                    <h1 class="title">Registration Form</h1>
-                    <form onsubmit="return validateForm()" method="POST" action="{{ url_for('select_batch') }}">
+                    <h1 class="title">Drop In Form</h1>
+                    <form onsubmit="return validateForm()" method="POST" action="{{ url_for('select_dropin') }}">
                         <div class="input-group">
                             <input class="input--style-3" type="text" placeholder="Name" name="name">
                         </div>
@@ -233,11 +216,6 @@
 
                             </div>
                         </div>
-
-                        <div class="input-group">
-                            <input class="input--style-3" type="text" placeholder="Promo Code" name="promo">
-                        </div>
-
 
 
 

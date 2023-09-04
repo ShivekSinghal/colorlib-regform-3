@@ -54,6 +54,7 @@
                     <div class="container" id="payment-mode">
                         <div class="row">
                             <form id="contactForm" action="{{ url_for('process_cash') }}" method="post">
+                                <h4 style="color : white; padding-bottom: 15px;">Amount Payable : {{fee}}</h4>
                                 <select class="custom-select" id="name" name="wingperson_name" required>
                                   <option value="">Wingperson Name</option>
                                   <option value="Priyanshi">Priyanshi</option>

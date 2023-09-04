@@ -47,153 +47,32 @@
 
 <!-- Same apps script code as GetFees shared before   -->
     function updateFee() {
-      var feeField = document.getElementById("feeField");
-      var selectedBatches = Array.from(document.querySelectorAll('input[name="batch[]"]:checked')).map(checkbox => checkbox.value);
-      var no_of_batches = selectedBatches.length;
+        var feeField = document.getElementById("feeField");
+        var selectedBatch = document.querySelector('input[name="batch"]:checked').value;
 
-      // Define the fees dictionary
-      var three_months_fees = {
-        "Any1": 9500,
-        "Any2": 17860,
-        "Any3": 26123,
-        "Any4": 34292,
-        "All5": 42366,
-        "HHorHL_once": 5900,
-        "HHandHL_once": 11092,
-        "Any1_twiceandHHorHL_once": 14691,
-        "Any1_twiceandHHandHL_once": 19824,
-        "Any2_twiceandHHorHL_once": 22992,
-        "Any2_twiceandHHandHL_once": 28066,
-        "Any3_twiceandHHorHL_once": 31197,
-        "Any4_twiceorHHandHL_once" : 29618,
-        "Any3_twiceandHHandHL_once" : 36212,
-        "no_selection" : ""
-
-        // Add the remaining fees here
-      };
-
-      var grid_fees = {
-             "Any1": 7552,
-             "Any2": 13688,
-             "Any3": 19706,
-             "Any4": 25724,
-             "All5": 31624,
-             "HHorHL_once": 5192,
-             "HHandHL_once": 9204,
-             "Any1_twiceandHHorHL_once": 11564,
-             "Any1_twiceandHHandHL_once": 15576,
-             "Any2_twiceandHHorHL_once": 17700,
-             "Any2_twiceandHHandHL_once": 21594,
-             "Any3_twiceandHHorHL_once": 23718,
-             "Any4_twiceorHHandHL_once": 29618,
-             "Any3_twiceandHHandHL_once": 27612,
-             "no_selection" : ""
-
+        // Define the fees dictionary
+        var feesDictionary = {
+            "Jazz 1 (Weekend)": 1270,
+            "Jazz 1 (Weekdays)" : 640,
+            "Ballet" : 640,
+            "Modern" : 640,
+            "Hip Hop (once a week)" : 640,
+            "Hip Hop (twice a week)" : 640,
+            "Heels (once a week)" : 640,
+            "Heels (twice a week)" : 640,
+            // Add other batches and their fees here
         };
 
-        var two_months_grid_fees = {
-          "Any1": 13900,
-          "Any2": 25600,
-          "Any3": 37200,
-          "Any4": 48600,
-          "All5": 59800,
-          "HHorHL_once": 9100,
-          "HHandHL_once": 16600,
-          "Any1_twiceandHHorHL_once": 21400,
-          "Any1_twiceandHHandHL_once": 28800,
-          "Any2_twiceandHHorHL_once": 33000,
-          "Any2_twiceandHHandHL_once": 40400,
-          "Any3_twiceandHHorHL_once": 44500,
-          "Any4_twiceorHHandHL_once": 55800,
-          "Any3_twiceandHHandHL_once": 51800,
-          "no_selection" : ""
+        // Check if the selected batch exists in the fees dictionary
+        if (selectedBatch in feesDictionary) {
+            feeField.value = feesDictionary[selectedBatch];
 
-          };
-
-
-      var validity = document.forms[0].elements["validity"].value;
-
-      if (validity === "two_months_grid"){
-        feesDictionary = two_months_grid_fees
-
-      }
-      if (validity === "grid"){
-        feesDictionary = grid_fees
-      }
-
-      if (validity === "three_months"){
-        feesDictionary = three_months_fees
-      }
-
-
-      // Logic For Getting Fees
-      if (no_of_batches === 0) {
-        feeField.value = feesDictionary['no_selection']; // Set fee value to an empty string
+        } else {
+            feeField.value = ""; // Set fee value to an empty string if the batch is not found
+        }
     }
-      if (no_of_batches === 1) {
-        var selectedBatch = selectedBatches[0];
-        if (selectedBatch === "Hip Hop (once a week)" || selectedBatch === "Heels (once a week)") {
-          feeField.value = feesDictionary['HHorHL_once'] - {{ discount }};
-        } else {
-          feeField.value = feesDictionary['Any1'] - {{ discount }};
-        }
-      } else if (no_of_batches === 2) {
-        var first_batch = selectedBatches[0];
-        var second_batch = selectedBatches[1];
-
-        if (second_batch === "Hip Hop (once a week)" || second_batch === "Heels (once a week)") {
-          if (first_batch === "Hip Hop (once a week)") {
-            feeField.value = feesDictionary['HHandHL_once'] - {{ discount }};
-          } else {
-            feeField.value = feesDictionary['Any1_twiceandHHorHL_once'] - {{ discount }};
-          }
-        } else {
-          feeField.value = feesDictionary['Any2'] - {{ discount }};
-        }
-      } else if (no_of_batches === 3) {
-        var first_batch = selectedBatches[0];
-        var second_batch = selectedBatches[1];
-        var third_batch = selectedBatches[2];
-
-        if (second_batch === "Hip Hop (once a week)") {
-          feeField.value = feesDictionary['Any1_twiceandHHandHL_once'] - {{ discount }};
-        }
-        else if (third_batch === "Hip Hop (once a week)" || third_batch === "Heels (once a week)") {
-          feeField.value = feesDictionary['Any2_twiceandHHorHL_once'] - {{ discount }};
-        } else {
-          feeField.value = feesDictionary['Any3'] - {{ discount }};
-        }
-      } else if (no_of_batches === 4) {
-        var first_batch = selectedBatches[0];
-        var third_batch = selectedBatches[2];
-        var fourth_batch = selectedBatches[3];
-
-        if (third_batch === "Hip Hop (once a week)") {
-          feeField.value = feesDictionary['Any2_twiceandHHandHL_once'] - {{ discount }};
-        }
-        else if (fourth_batch === "Hip Hop (once a week)" || fourth_batch === "Heels (once a week)") {
-          feeField.value = feesDictionary['Any3_twiceandHHorHL_once'] - {{ discount }};
-        } else {
-          feeField.value = feesDictionary['Any4'] - {{ discount }};
-        }
-      } else if (no_of_batches === 5) {
-        var first_batch = selectedBatches[0];
-        var third_batch = selectedBatches[2];
-        var fourth_batch = selectedBatches[3];
-        var fifth_batch = selectedBatches[4];
-
-        if (fifth_batch === "Hip Hop (once a week)" || fifth_batch === "Heels (once a week)"){
-          feeField.value = feesDictionary["Any4_twiceorHHandHL_once"] - {{ discount }};
-        }
-        else if (fourth_batch === "Hip Hop (once a week)"){
-          feeField.value = feesDictionary["Any3_twiceandHHorHL_once"] - {{ discount }};
-        } else {
-          feeField.value = feesDictionary["All5"] - {{ discount }};
-        }
 
 
-      }
-    }
     function doGet() {
       return HtmlService.createTemplateFromFile('index').evaluate();
       }
@@ -204,10 +83,10 @@
       var validity = document.forms[0].elements["validity"].value;
       var fee = document.forms[0].elements["fee"].value;
 
-      var selectedBatches = Array.from(document.querySelectorAll('input[name="batch[]"]:checked')).map(checkbox => checkbox.value);
+      var selectedBatches = Array.from(document.querySelectorAll('input[name="batch"]:checked')).map(checkbox => checkbox.value);
       var no_of_batches = selectedBatches.length;
 
-      if (no_of_batches === 0) {
+      if (selectedBatches[0] === "") {
         alert("Please select at least one batch.");
         return false; // Prevent form submission
       }
@@ -224,10 +103,6 @@
 
       return true; // Form submission will proceed if all validations pass
     }
-    {% if promo_message %}
-    // Display an alert box with the promo message
-        alert("{{ promo_message }}");
-    {% endif %}
 
 
 
@@ -252,34 +127,44 @@
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
                                 <select class="custom-select" name="validity" required>
-                                    <option disabled="disabled" selected="selected" value="">Validity</option>
-                                    <option value="two_months_grid">August, September, Grid 2.0</option>
-                                    <option value="three_months">August, September, December</option>
-                                    <option value="grid">Grid 2.0</option>
+                                    <option value="Drop In">Drop In</option>
 
 
                                 </select>
+                                <label style="padding-top: 20px; padding-bottom: 10px; font-size: 17px;" for="birthday">Date :</label>
+                                <input class="custom-select" type="date" id="birthday" name="dropin_date" placeholder="Date">
 
 
                             </div>
+
+
                         </div>
 
                         <div class="container">
                             {% if batch_scenario == "twice" %}
                                 <div class="row">
                                     <h4 style="color : #ffffff; padding : 0px 0px 20px 15px;">Batch :</h4>
+
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input class="text-white" type="checkbox" name="batch[]" value="Jazz" onchange="updateFee()">
+                                                    <input class="text-white" type="radio" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()">
                                                 </label>
-                                                <span class="ml-2">Jazz</span>
+                                                <span class="ml-2">Jazz 1 (Weekend)</span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Ballet" onchange="updateFee()">
+                                                    <input class="text-white" type="radio" name="batch" value="Jazz 1 (Weekdays)" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Jazz 1 (Weekdays)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label class="checkbox-inline">
+                                                    <input type="radio" name="batch" value="Ballet" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Ballet</span>
                                             </div>
@@ -287,7 +172,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Modern" onchange="updateFee()">
+                                                    <input type="radio" name="batch" value="Modern" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Modern</span>
                                             </div>
@@ -296,7 +181,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Hip Hop (twice a week)" onchange="updateFee()">
+                                                    <input type="radio" name="batch" value="Hip Hop (twice a week)" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Hip Hop (twice a week)</span>
                                             </div>
@@ -304,7 +189,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Heels (twice a week)" onchange="updateFee()">
+                                                    <input type="radio" name="batch" value="Heels (twice a week)" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Heels (twice a week)</span>
                                             </div>
@@ -316,15 +201,15 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input class="text-white" type="checkbox" name="batch[]" value="Jazz" onchange="updateFee()">
+                                                    <input class="text-white" type="radio" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()">
                                                 </label>
-                                                <span class="ml-2">Jazz</span>
+                                                <span class="ml-2">Jazz 1 (Weekend)</span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Ballet" onchange="updateFee()">
+                                                    <input type="radio" name="batch" value="Ballet" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Ballet</span>
                                             </div>
@@ -332,7 +217,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Modern" onchange="updateFee()">
+                                                    <input type="radio" name="batch" value="Modern" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Modern</span>
                                             </div>
@@ -341,7 +226,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Hip Hop (once a week)" onchange="updateFee()">
+                                                    <input type="radio" name="batch" value="Hip Hop (once a week)" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Hip Hop (once a week)</span>
                                             </div>
@@ -349,7 +234,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Heels (once a week)" onchange="updateFee()">
+                                                    <input type="radio" name="batch" value="Heels (once a week)" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Heels (once a week)</span>
                                             </div>
@@ -363,15 +248,23 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input class="text-white" type="checkbox" name="batch[]" value="Jazz" onchange="updateFee()">
+                                                    <input class="text-white" type="radio" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()">
                                                 </label>
-                                                <span class="ml-2">Jazz</span>
+                                                <span class="ml-2">Jazz 1 (Weekend)</span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Ballet" onchange="updateFee()">
+                                                    <input class="text-white" type="radio" name="batch" value="Jazz 1 (Weekdays)" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Jazz 1 (Weekdays)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label class="checkbox-inline">
+                                                    <input type="radio" name="batch" value="Ballet" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Ballet</span>
                                             </div>
@@ -379,7 +272,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Modern" onchange="updateFee()">
+                                                    <input type="radio" name="batch" value="Modern" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Modern</span>
                                             </div>
@@ -388,7 +281,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Hip Hop (twice a week)" onchange="updateFee()">
+                                                    <input type="radio" name="batch" value="Hip Hop (twice a week)" onchange="updateFee()">
                                                 </label>
                                                 <span id="" class="ml-2">Hip Hop (twice a week)</span>
                                             </div>
@@ -396,7 +289,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="batch[]" value="Heels (once a week)" onchange="updateFee()">
+                                                    <input type="radio" name="batch" value="Heels (once a week)" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Heels (once a week)</span>
                                             </div>
@@ -406,7 +299,7 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
-                                                <label class="fee-label" for="fee">Fee:</label>
+                                                <label class="fee-label" for="fee">Fee: </label>
                                                 <input class="input--style-3" type="text"  id="feeField" name="fee"  readonly><br><br>
 
 

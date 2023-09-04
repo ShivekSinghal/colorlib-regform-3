@@ -108,7 +108,7 @@ button{
                                 <button id="rzp-button1" class="btn btn-primary btn-lg col-lg-12 col-md-12 col-sm-12 btn-pill" name="Bank Transfer">Bank Transfer</button>
 <!--                                <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>-->
 
-                                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!--                                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>-->
                             </div>
                             <div class="col-sm">
                                 <button id="cash-button1" class="btn btn-success btn-lg col-lg-12 col-md-12 col-sm-12 btn-pill" name="Cash">Cash</button>
@@ -142,39 +142,26 @@ button{
 
 
 <script>
-var options = {
-    "key": "{{razorpay_key_id}}", // Enter the Key ID generated from the Dashboard
-    "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    "currency": "INR",
-    "name": "Hashtag",
-    "description": "Register",
-    "image": "https://example.com/your_logo",
-    "order_id": "{{ payment['id'] }}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "handler": function (response){
-        window.location.href = "/success";
-<!--        alert(response.razorpay_payment_id);-->
-<!--        alert(response.razorpay_order_id);-->
-<!--        alert(response.razorpay_signature)-->
-    },
 
-    "theme": {
-        "color": "#FF0077"
-    }
-};
-var rzp1 = new Razorpay(options);
-rzp1.on('payment.failed', function (response){
-        alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
-        alert(response.error.reason);
-        alert(response.error.metadata.order_id);
-        alert(response.error.metadata.payment_id);
+
+document.getElementById("rzp-button1").addEventListener("click", function() {
+    // Replace this with CC Avenue's API integration logic
+    // Redirect the user to CC Avenue's payment page for bank transfer
+
+    var bankTransferUrl = "https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode";  // Replace with the actual route to CC Avenue's bank transfer page
+<!--    var bankTransferUrl = "https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&amount=${fee}&order_id=${order_id}&currency=${currency}&redirect_url=${redirect_url}&cancel_url=${cancel_url}&access_code=$xscode";  // Replace with the actual route to CC Avenue's bank transfer page-->
+    window.open(bankTransferUrl);
+    // Open the iframe with the CC Avenue bank transfer page
+<!--    var iframeHtml = `-->
+<!--        <center>-->
+<!--            &lt;!&ndash; width required minimum 482px &ndash;&gt;-->
+<!--            <iframe width="482" height="500" scrolling="No" frameborder="0" id="paymentFrame" src="${bankTransferUrl}">-->
+<!--            </iframe>-->
+<!--        </center>-->
+<!--    `;-->
+
+<!--    document.getElementById("payment-mode").innerHTML = iframeHtml;-->
 });
-document.getElementById('rzp-button1').onclick = function(e){
-    rzp1.open();
-    e.preventDefault();
-}
 
 
 <!--GET FEES By SELECTiNG BATCHES-->
