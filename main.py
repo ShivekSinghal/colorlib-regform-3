@@ -33,7 +33,7 @@ razorpay_key_id = 'rzp_test_9Yy2azW5HeczxN'
 razorpay_key_secret = 'QhcRWMasciGh2iZUhNe6m786'
 
 # Create a Razorpay client
-razorpay_client = razorpay.Client(auth=(razorpay_key_id, razorpay_key_secret))
+# razorpay_client = razorpay.Client(auth=(razorpay_key_id, razorpay_key_secret))
 
 # Your Cc avenue API credentials
 
