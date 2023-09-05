@@ -3,7 +3,6 @@ import smtplib
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import os
 from oauth2client.service_account import ServiceAccountCredentials
-import razorpay
 import gspread
 from premailer import transform
 from datetime import datetime
