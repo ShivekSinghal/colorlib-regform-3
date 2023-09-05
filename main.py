@@ -9,12 +9,11 @@ from datetime import datetime
 from PIL import Image
 import base64
 from email.mime.image import MIMEImage
-from cashfree_sdk.payouts import Payouts
 from ccavutil import encrypt, decrypt
 from promo_code import generate_random_promo_code, create_promo_json, check_promo_validity, apply_promo_code, load_promo_data
 import json
-import hmac
-import hashlib
+# import hmac
+# import hashlib
 
 app = Flask(__name__)
 
