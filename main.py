@@ -12,7 +12,7 @@ import base64
 from email.mime.image import MIMEImage
 from cashfree_sdk.payouts import Payouts
 from ccavutil import encrypt, decrypt
-from promo_code import generate_random_promo_code, create_promo_json, check_promo_validity, apply_promo_code
+from promo_code import generate_random_promo_code, create_promo_json, check_promo_validity, apply_promo_code, load_promo_data
 import json
 import hmac
 import hashlib
@@ -213,16 +213,26 @@ def select_batch():
     else:
         batch_scenario = "once"
 
-    if apply_promo_code(name, email, phone, promo_code, filename="promo_code.json"):
-        with open("promo_code.json", 'r') as json_file:
-            data = json.load(json_file)
-            discount = data['amount']
+    promo_data = load_promo_data("promo_data.json")
+    if promo_data is not None:
 
-        return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount, promo_message=f"Promo Code worth {discount} applied successfully")
-    if promo_code == "":
-        return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=0)
-    else:
-        return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=0, promo_message=f"Invalid Promo Code")
+        if apply_promo_code(name, email, phone, promo_code, filename="promo_code.json"):
+            with open("promo_code.json", 'r') as json_file:
+                data = json.load(json_file)
+                discount = 0
+
+                for item in data:
+                    if isinstance(item, dict) and 'promo_code' in item and item['promo_code'] == promo_code:
+                        if 'amount' in item:
+                            discount = item['amount']
+                            print(discount)
+                        break
+
+            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount, promo_message=f"Promo Code worth {discount} applied successfully")
+        if promo_code == "":
+            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=0)
+        else:
+            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=0, promo_message=f"Invalid Promo Code")
 
 
 @app.route('/payment', methods=['GET', 'POST'])
@@ -325,8 +335,11 @@ def payment_successful():
         paid_to = "Pink Grid"
 
     if validity == "Drop In":
-        promo_code = generate_random_promo_code()
-        create_promo_json(name, email, phone, fee, promo_code, dropin_date=dropin_date, filename="promo_code.json")
+        promo_data = load_promo_data("promo_data.json")
+
+        if promo_data is not None:
+
+            promo_code = create_promo_json(name, email, phone, fee, dropin_date, "promo_code.json")
 
 
 
