@@ -219,6 +219,8 @@ def select_batch():
             discount = data['amount']
 
         return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount, promo_message=f"Promo Code worth {discount} applied successfully")
+    if promo_code == "":
+        return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=0)
     else:
         return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=0, promo_message=f"Invalid Promo Code")
 
