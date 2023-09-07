@@ -245,7 +245,8 @@ def make_payment():
     p_redirect_url = url_for('payment_successful')
     p_cancel_url = url_for('payment_failed')
 
-    fee = request.form['fee']
+    fee_without_gst = request.form['fee']
+    fee = str(round(float(fee_without_gst)*1.18))
     batches = request.form.getlist('batch[]')
     paid_to = "Pink Grid"
     validity = request.form['validity']
