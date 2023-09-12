@@ -16,511 +16,492 @@
 
 
     <!-- Main CSS-->
-    <style>
-/* ==========================================================================
-   #FONT
-   ========================================================================== */
-.font-robo {
-  font-family: "Roboto", "Arial", "Helvetica Neue", sans-serif;
-}
-.grid-container {
+<style>
+  /* ==========================================================================
+     #FONT
+     ========================================================================== */
+  .font-robo {
+    font-family: "Roboto", "Arial", "Helvetica Neue", sans-serif;
+  }
+
+  .grid-container {
     display: grid;
     place-items: center;
-    padding-bottom : 40px;
+    padding-bottom: 40px;
     height: 18vh; /* Set a height to center vertically as well */
-
-}
-.ii a[href] {
-    color: white;
-}
-.gt a {
-    color: #ffffff;
-}
-
-.centered-text {
-    font-size : 30px;
-    text-align : center;
-}
-/* Hashtag Logo PNG 2 */
-.container img{
-    height : auto;
-    object-fit : contain;
-    width : 20%;
-    margin : auto;
-    display : flex;
-
-}
-.container .info {
-    margin-bottom : auto;
-    margin-left : auto;
-    text-align : right;
-    padding-right : 40px;
-
-
-}
-
-
-.font-poppins {
-  font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
-}
-#name {
-    padding-top : 80px;
-
-}
-.details{
-    padding-top : 90px;
-
-}
-<!--#receipt{-->
-<!--    border : 2px solid #ff707f-->
-
-}
-
-#paid-to{
-    padding-bottom : 20px;
-
-
-}
-/* Basic styling for the footer */
-/* Basic styling for the footer */
-/* Basic styling for the footer */
-footer {
-  background-color: #ff007f;
-  padding: 20px;
-  text-align: center;
-}
-
-.footer-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-}
-
-.contact-info, .social-media {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  padding : 5px 3px 5px 300px;
-}
-
-/* Style for the icons */
-.icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
-  fill: #333;
-}
-
-/* Additional styles to improve the appearance */
-a {
-  display: block;
-  color: #333;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  padding : 4px 8px 4px 8px
-}
-
-a:hover {
-  color: #007bff;
-}
-
-
-/* ==========================================================================
-   #GRID
-   ========================================================================== */
-.row {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
-
-.row-space {
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-.col-2 {
-  width: -webkit-calc((100% - 60px) / 2);
-  width: -moz-calc((100% - 60px) / 2);
-  width: calc((100% - 60px) / 2);
-}
-
-@media (max-width: 767px) {
-  .col-2 {
-    width: 100%;
   }
-}
 
-/* ==========================================================================
-   #BOX-SIZING
-   ========================================================================== */
-/**
- * More sensible default box-sizing:
- * css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice
- */
-html {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
+  .ii a[href] {
+    color: white;
+  }
 
-* {
-  padding: 0;
-  margin: 0;
-}
+  .gt a {
+    color: #ffffff;
+  }
 
-*, *:before, *:after {
-  -webkit-box-sizing: inherit;
-  -moz-box-sizing: inherit;
-  box-sizing: inherit;
-}
+  .centered-text {
+    font-size: 30px;
+    text-align: center;
+  }
 
-/* ==========================================================================
-   #RESET
-   ========================================================================== */
-/**
- * A very simple reset that sits on top of Normalize.css.
- */
-body,
-h1, h2, h3, h4, h5, h6,
-blockquote, p, pre,
-dl, dd, ol, ul,
-figure,
-hr,
-fieldset, legend {
-  margin: 0;
-  padding: 0;
-}
+  /* Hashtag Logo PNG 2 */
+  .container img {
+    height: auto;
+    object-fit: contain;
+    width: 20%;
+    margin: auto;
+    display: flex;
+  }
 
-/**
- * Remove trailing margins from nested lists.
- */
-li > ol,
-li > ul {
-  margin-bottom: 0;
-}
+  .container .info {
+    margin-bottom: auto;
+    margin-left: auto;
+    text-align: right;
+    padding-right: 40px;
+  }
 
-/**
- * Remove default table spacing.
- */
+  .font-poppins {
+    font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
+  }
+
+  #name {
+    padding-top: 80px;
+  }
+
+  .details {
+    padding-top: 90px;
+  }
+
+  #paid-to {
+    padding-bottom: 20px;
+  }
+
+  /* Basic styling for the footer */
+  footer {
+    background-color: #ff007f;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-info, .social-media {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px 3px 5px 300px;
+  }
+
+  /* Style for the icons */
+  .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    fill: #333;
+  }
+
+  /* Additional styles to improve the appearance */
+  a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    padding: 4px 8px 4px 8px;
+  }
+
+  a:hover {
+    color: #007bff;
+  }
+
+  /* ==========================================================================
+     #GRID
+     ========================================================================== */
+  .row {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+
+  .row-space {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+
+  .col-2 {
+    width: -webkit-calc((100% - 60px) / 2);
+    width: -moz-calc((100% - 60px) / 2);
+    width: calc((100% - 60px) / 2);
+  }
+
+  @media (max-width: 767px) {
+    .col-2 {
+      width: 100%;
+    }
+  }
+
+  /* ==========================================================================
+     #BOX-SIZING
+     ========================================================================== */
+  /**
+   * More sensible default box-sizing:
+   * css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice
+   */
+  html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  *, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+  }
+
+  /* ==========================================================================
+     #RESET
+     ========================================================================== */
+  /**
+   * A very simple reset that sits on top of Normalize.css.
+   */
+  body,
+  h1, h2, h3, h4, h5, h6,
+  blockquote, p, pre,
+  dl, dd, ol, ul,
+  figure,
+  hr,
+  fieldset, legend {
+    margin: 0;
+    padding: 0;
+  }
+
+  /**
+   * Remove trailing margins from nested lists.
+   */
+  li > ol,
+  li > ul {
+    margin-bottom: 0;
+  }
+
+  /**
+   * Remove default table spacing.
+   */
   table {
     border-collapse: collapse;
     width: 100%;
-    color : white;
-
-
+    color: white;
   }
 
   th, td {
     border: 1px solid black;
     padding: 8px;
-    padding-left : 30px;
+    padding-left: 30px;
     text-align: center;
-    font-size : 28px
+    font-size: 28px;
   }
-  td:nth-child(2) {
-  text-align: left;
-}
 
+  td:nth-child(2) {
+    text-align: left;
+  }
 
   th {
     background-color: #f2f2f2;
   }
 
+  /**
+   * 1. Reset Chrome and Firefox behaviour which sets a `min-width: min-content;`
+   *    on fieldsets.
+   */
+  fieldset {
+    min-width: 0;
+    /* [1] */
+    border: 0;
+  }
 
-/**
- * 1. Reset Chrome and Firefox behaviour which sets a `min-width: min-content;`
- *    on fieldsets.
- */
-fieldset {
-  min-width: 0;
-  /* [1] */
-  border: 0;
-}
+  button {
+    outline: none;
+    background: none;
+    border: none;
+  }
 
-button {
-  outline: none;
-  background: none;
-  border: none;
-}
+  /* ==========================================================================
+     #PAGE WRAPPER
+     ========================================================================== */
+  .page-wrapper {
+    min-height: 100vh;
+  }
 
-/* ==========================================================================
-   #PAGE WRAPPER
-   ========================================================================== */
-.page-wrapper {
-  min-height: 100vh;
+  body {
+    font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+  }
 
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    color: white;
+    font-family: Montserrat;
+  }
 
-}
+  h1 {
+    font-size: 36px;
+    padding: 12px 0px 12px 30px;
+  }
 
-body {
-  font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-}
+  .company-name {
+    padding-top: 50px;
+    text-align: center;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 400;
-  color : white;
-  font-family : Montserrat;
+  h2 {
+    font-size: 30px;
+    padding: 20px 0px 12px 30px;
+  }
 
-}
+  @font-face {
+    font-family: 'Codystar';
+    src: url(data:font/truetype;base64,aHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3M/ZmFtaWx5PUNvZHlzdGFyCg==) format('truetype');
+  }
 
-h1 {
-  font-size: 36px;
-  padding : 12px 0px 12px 30px ;
-}
-.company-name{
-  padding-top : 50px;
-  text-align : center;
-}
-
-h2 {
-  font-size: 30px;
-  padding : 20px 0px 12px 30px ;
-}
-
-
-@font-face {
-  font-family: 'Codystar';
-  src: url(data:font/truetype;base64,aHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3M/ZmFtaWx5PUNvZHlzdGFyCg==) format('truetype');
-}
-
-.sub-heading{
+  .sub-heading {
     font-family: 'Codystar';
     font-size: 22px;
-    text-align : center;
-    padding : 0;
-    padding-bottom : 30px;
+    text-align: center;
+    padding: 0;
+    padding-bottom: 30px;
+  }
 
+  h3 {
+    font-size: 24px;
+    padding: 4px 0px 4px 30px;
+    opacity: 0.6;
+  }
 
-}
+  h4 {
+    font-size: 18px;
+    padding: 5px 5px 5px 0px;
+  }
 
-h3 {
-  font-size: 24px;
-  padding : 4px 0px 4px 30px;
-  opacity : 0.6;
-}
+  h5 {
+    font-size: 15px;
+  }
 
-h4 {
-  font-size: 18px;
-  padding : 5px 5px 5px 0px ;
+  h6 {
+    font-size: 13px;
+  }
 
-}
+  hr {
+    margin: 20px 0px 20px 0px;
+    height: 30px;
+    color: #000000;
+    font-weight: bold;
+  }
 
-h5 {
-  font-size: 15px;
-}
+  /* ==========================================================================
+     #BACKGROUND
+     ========================================================================== */
+  .bg-gra-01 {
+    background: #696969;
+  }
 
-h6 {
-  font-size: 13px;
-}
+  /* ==========================================================================
+     #SPACING
+     ========================================================================== */
+  .p-t-100 {
+    padding-top: 100px;
+  }
 
-hr{
-    margin : 20px 0px 20px 0px;
-    height : 30px;
-    color : #000000;
-    font-weight : bold;
+  .ii a[href] {
+    color: #ffffff;
+  }
 
-}
+  .p-t-180 {
+    padding-top: 180px;
+  }
 
-/* ==========================================================================
-   #BACKGROUND
-   ========================================================================== */
-.bg-gra-01 {
-    background : #696969
-}
+  .p-t-20 {
+    padding-top: 20px;
+  }
 
-/* ==========================================================================
-   #SPACING
-   ========================================================================== */
-.p-t-100 {
-  padding-top: 100px;
-}
-.ii a[href] {
-  color: #ffffff;
-}
+  .p-t-10 {
+    padding-top: 10px;
+  }
 
+  .p-t-30 {
+    padding-top: 30px;
+  }
 
-.p-t-180 {
-  padding-top: 180px;
-}
+  .p-b-100 {
+    padding-bottom: 100px;
+  }
 
-.p-t-20 {
-  padding-top: 20px;
-}
+  /* ==========================================================================
+     #WRAPPER
+     ========================================================================== */
+  .wrapper {
+    margin: 0 auto;
+  }
 
-.p-t-10 {
-  padding-top: 10px;
-}
+  .wrapper--w960 {
+    max-width: 960px;
+  }
 
-.p-t-30 {
-  padding-top: 30px;
-}
+  .wrapper--w780 {
+    max-width: 780px;
+  }
 
-.p-b-100 {
-  padding-bottom: 100px;
-}
+  .wrapper--w680 {
+    max-width: 680px;
+  }
 
-/* ==========================================================================
-   #WRAPPER
-   ========================================================================== */
-.wrapper {
-  margin: 0 auto;
-}
+  /* ==========================================================================
+     #BUTTON
+     ========================================================================== */
+  .btn {
+    display: inline-block;
+    line-height: 40px;
+    padding: 0 33px;
+    font-family: Poppins, Arial, "Helvetica Neue", sans-serif;
+    cursor: pointer;
+    color: #fff;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    font-size: 18px;
+  }
 
-.wrapper--w960 {
-  max-width: 960px;
-}
+  .btn--radius {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
 
-.wrapper--w780 {
-  max-width: 780px;
-}
+  .btn--pill {
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+  }
 
-.wrapper--w680 {
-  max-width: 680px;
-}
+  .btn--hotpink {
+    background: #ff007f;
+  }
 
-/* ==========================================================================
-   #BUTTON
-   ========================================================================== */
-.btn {
-  display: inline-block;
-  line-height: 40px;
-  padding: 0 33px;
-  font-family: Poppins, Arial, "Helvetica Neue", sans-serif;
-  cursor: pointer;
-  color: #fff;
-  -webkit-transition: all 0.4s ease;
-  -o-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  transition: all 0.4s ease;
-  font-size: 18px;
-}
+  .btn--hotpink:hover {
+    background: #ff00b2;
+  }
 
-.btn--radius {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
+  .batch_name {
+    text-color: "white";
+  }
 
-.btn--pill {
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
-}
+  /* ==========================================================================
+     #TITLE
+     ========================================================================== */
+  .title {
+    font-size: 24px;
+    color: #fff;
+    font-weight: 400;
+    margin-bottom: 36px;
+  }
 
-.btn--hotpink {
-  background: #FF007f;
-}
+  /* ==========================================================================
+     #CARD
+     ========================================================================== */
+  .card {
+    overflow: hidden;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #fff;
+    border: 2px solid #ff007f;
+    box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    display: table;
+  }
 
-.btn--hotpink:hover {
-  background: #FF00B2;
-}
-.batch_name{
-    text-color : "white"
-
-}
-/* ==========================================================================
-   #TITLE
-   ========================================================================== */
-.title {
-  font-size: 24px;
-  color: #fff;
-  font-weight: 400;
-  margin-bottom: 36px;
-}
-
-/* ==========================================================================
-   #CARD
-   ========================================================================== */
-.card {
-  overflow: hidden;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  background: #fff;
-  border : 2px solid #ff007f;
-  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  display: table;
-
-}
-
-.card-3 {
-  background: #000;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  display: table;
-}
-.background-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  opacity: 0.3; /* Adjust opacity as needed */
-  z-index: -1; /* Place behind the content */
-}
-
-
-.card-3 .card-heading {
-  background: url("../images/hashtag.jpeg") top left/cover no-repeat;
-  display: table-cell;
-  width: 50%;
-  margin-right : auto;
-
-}
-
-.card-3 .card-body {
-  padding: 57px 65px;
-  padding-bottom: 65px;
-  display: table-cell;
-}
-
-@media (max-width: 767px) {
   .card-3 {
-    display: block;
-  }
-  .card-3 .card-heading {
-    display: block;
+    background: #000;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
     width: 100%;
-    padding-top: 400px;
-    background-position: center center;
+    display: table;
   }
-  .card-3 .card-body {
-    display: block;
-    width: 100%;
-    padding: 37px 30px;
-    padding-bottom: 45px;
-  }
-  .watermark {
+
+  .background-image {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.3;
-    pointer-events: none; /* This prevents the watermark from being interactive */
-}
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.3; /* Adjust opacity as needed */
+    z-index: -1; /* Place behind the content */
+  }
 
-}
+  .card-3 .card-heading {
+    background: url("../images/hashtag.jpeg") top left/cover no-repeat;
+    display: table-cell;
+    width: 50%;
+    margin-right: auto;
+  }
 
+  .card-3 .card-body {
+    padding: 57px 65px;
+    padding-bottom: 65px;
+    display: table-cell;
+  }
+
+  @media (max-width: 767px) {
+    .card-3 {
+      display: block;
+    }
+
+    .card-3 .card-heading {
+      display: block;
+      width: 100%;
+      padding-top: 400px;
+      background-position: center center;
+    }
+
+    .card-3 .card-body {
+      display: block;
+      width: 100%;
+      padding: 37px 30px;
+      padding-bottom: 45px;
+    }
+
+    .watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.3;
+      pointer-events: none; /* This prevents the watermark from being interactive */
+    }
+  }
 </style>
 </head>
 <body>
@@ -619,19 +600,13 @@ hr{
 
     </div>
 
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 
 
-    <!-- Jquery JS-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <!-- Vendor JS-->
-    <script src="vendor/select2/select2.min.js"></script>
-    <script src="vendor/datepicker/moment.min.js"></script>
-    <script src="vendor/datepicker/daterangepicker.js"></script>
 
     <!-- Main JS-->
     <script src="js/global.js"></script>
 
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
 
 
