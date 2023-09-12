@@ -29,9 +29,6 @@ os.environ['SHEET_NAME'] = 'Sheet1'
 os.environ['WORKING_KEY'] = "1ED377C8D4316E3330503FC2188622A1"
 os.environ['ACCESS_CODE'] = "AVOF80KF60BS22FOSB"
 os.environ['MERCHANT_ID'] = "2538003"
-os.environ['MY_EMAIL'] = "singhalshivek24@gmail.com"
-os.environ['PASSWORD'] = "lzjkbgcrngzalkhc"
-os.environ['EMAIL_SUBJECT'] = "TEST EMAIL"
 os.environ['THREE_MONTHS_VALIDITY'] = "false"
 os.environ['GRID_VALIDITY'] = "false"
 
@@ -115,10 +112,10 @@ from email.mime.text import MIMEText
 
 
 def send_receipt(receiver_mail, rendered_html):
-    my_email = os.environ.get('MY_EMAIL')
-    password = os.environ.get('PASSWORD')
+    my_email = "singhalshivek24@gmail.com"
+    password = 'lzjkbgcrngzalkhc'
     smtp_server = "smtp.gmail.com"
-    email_subject = os.environ.get("EMAIL_SUBJECT")
+    email_subject = "Registration Receipt Sep'23"
     smtp_port = 587
 
     inlined_html = transform(rendered_html)
@@ -406,11 +403,11 @@ def payment_successful():
 
     hashtag_logo = image_to_base64('./static/images/Hashtag_logo.png')
     hashtag_watermark = image_to_base64('./static/images/pink.png')
+    increment_receipt_number()
 
     sheet.append_row(row)
     print("Succesfully added to sheets")
 
-    increment_receipt_number()
     rendered_receipt = render_template("receipt2.html", date=today_date, name=name, batch=batch_str, phone=phone,
                                        validity=validity, email=email, studio=studio, gross_amount=gross_amount,
                                        gst=gst, fee=fee, order_receipt=f"#{str(order_receipt)}",
