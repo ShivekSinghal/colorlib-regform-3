@@ -1,92 +1,58 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Required meta tags-->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Colorlib Templates">
-    <meta name="author" content="Colorlib">
-    <meta name="keywords" content="Colorlib Templates">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed</title>
+    <link rel="icon" href="../static/images/pink_favicorn/favicon.ico" type="image/x-icon">
 
-    <!-- Title Page-->
-    <title>Registration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Icons font CSS-->
-    <link href="{{ url_for('static', filename='css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet" media="all">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
 
-    <!--OR-->
-<!--    <link href="../static/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">-->
-<!--    <link href="../static/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">-->
+        .border {
+            border-top: 3px solid #ff007f;
+             color : #ff007f;/* Top border color */
+        }
 
-    <!-- Font special for pages-->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!--OR-->
-<!--    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">-->
-
-    <!-- Vendor CSS-->
-    <link href="{{ url_for('static', filename='vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url_for('static', filename='vendor/datepicker/daterangepicker.css') }}" rel="stylesheet" media="all">
-
-    <!--OR-->
-<!--    <link href="../static/vendor/select2/select2.min.css" rel="stylesheet" media="all">-->
-<!--    <link href="../static/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">-->
-
-<!--    Bootstarp Css-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-    <!-- Main CSS-->
-    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" media="all">
-<!--OR-->
-<!--    <link href="../static/css/main.css" rel="stylesheet" media="all">-->
-
+        .btn-outline-success {
+            color: #ff007f; /* Button text color */
+            border-color: #ff007f; /* Button border color */
+        }
+        .btn-outline-success:hover {
+            color: white; /* Button text color on hover */
+            background-color: #ff007f; /* Button background color on hover */
+            border-color: #ff007f; /* Button border color on hover */
+        }
+    </style>
 </head>
-<style>
-button{
-    padding : 5px 0px 5px 0px;
-    }
-
-
-</style>
-
 <body>
-    <div class="page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
-        <div class="wrapper wrapper--w780">
-            <div class="card card-3">
-                <div class="card-heading"></div>
-                <div class="card-body">
-                    <h1 class="title" style="text-align : center;">Payment Failed </h1>
-
-                    <div class="container" id="payment-mode">
-                        <div class="row">
-                            <h2>Please try again</h2>
-
-                        </div>
-                    </div>
-
-
+    <div class="vh-100 d-flex justify-content-center align-items-center">
+        <div class="col-md-4">
+            <div style="color:black" class="border border-2 border-danger"></div>
+            <div class="card  bg-black shadow p-5">
+                <div class="mb-4 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-danger" width="75" height="75"
+                        fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                            d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <h1>Payment Failed !</h1>
+                    <p> </p>
+                    <a href="{{url_for('registration_form')}}" class="btn btn-outline-success">Try Again</a>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Jquery JS-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <!-- Vendor JS-->
-    <script src="vendor/select2/select2.min.js"></script>
-    <script src="vendor/datepicker/moment.min.js"></script>
-    <script src="vendor/datepicker/daterangepicker.js"></script>
-
-    <!-- Main JS-->
-    <script src="js/global.js"></script>
-
-
-
-
-
-
-
-
 </body>
 </html>

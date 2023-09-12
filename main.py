@@ -1,6 +1,6 @@
 
 import smtplib
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify, flash
 import os
 from oauth2client.service_account import ServiceAccountCredentials
 import gspread
@@ -10,7 +10,7 @@ from PIL import Image
 import base64
 from email.mime.image import MIMEImage
 from ccavutil import encrypt, decrypt
-from promo_code import generate_random_promo_code, create_promo_json, check_promo_validity, apply_promo_code, load_promo_data
+from promo_code import generate_random_promo_code, create_promo_json, check_promo_validity, apply_promo_code, load_promo_data, remove_promo_code
 import json
 # import hmac
 # import hashlib
@@ -24,13 +24,35 @@ scopes = ['https://www.googleapis.com/auth/spreadsheets']
 credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scopes)
 client = gspread.authorize(credentials)
 
+os.environ['SHEET_KEY'] = '1cJdiWjKzOMK6kVkPWBfhBVGTy_bsxDBwDbwlagkQfY4'
+os.environ['SHEET_NAME'] = 'Sheet1'
+os.environ['WORKING_KEY'] = "1ED377C8D4316E3330503FC2188622A1"
+os.environ['ACCESS_CODE'] = "AVOF80KF60BS22FOSB"
+os.environ['MERCHANT_ID'] = "2538003"
+os.environ['MY_EMAIL'] = "singhalshivek24@gmail.com"
+os.environ['PASSWORD'] = "lzjkbgcrngzalkhc"
+os.environ['EMAIL_SUBJECT'] = "TEST EMAIL"
+os.environ['THREE_MONTHS_VALIDITY'] = "false"
+os.environ['GRID_VALIDITY'] = "false"
+
+# Environment variables with values in the desired format
+os.environ['PRIYANSHI_PASSWORD'] = "priyanshi_password"
+os.environ['KAJAL_PASSWORD'] = "kajal_password"
+os.environ['JHILMIL_PASSWORD'] = "jhilmil_password"
+os.environ['RUBANI_PASSWORD'] = "rubani_password"
+os.environ['JAHNVI_PASSWORD'] = "jahnvi_password"
+os.environ['MUSKAN_PASSWORD'] = "muskan_password"
+os.environ['TARUN_PASSWORD'] = "tarun_password"
+
 # Google Sheet details
-sheet_key = '1cJdiWjKzOMK6kVkPWBfhBVGTy_bsxDBwDbwlagkQfY4'
-sheet_name = 'Sheet1'
+sheet_key = os.environ.get('SHEET_KEY')
+sheet_name = os.environ.get('SHEET_NAME')
+
+
 
 # Razorpay payment gateway credentials
-razorpay_key_id = 'rzp_test_9Yy2azW5HeczxN'
-razorpay_key_secret = 'QhcRWMasciGh2iZUhNe6m786'
+# razorpay_key_id = 'rzp_test_9Yy2azW5HeczxN'
+# razorpay_key_secret = 'QhcRWMasciGh2iZUhNe6m786'
 
 # Create a Razorpay client
 # razorpay_client = razorpay.Client(auth=(razorpay_key_id, razorpay_key_secret))
@@ -38,8 +60,8 @@ razorpay_key_secret = 'QhcRWMasciGh2iZUhNe6m786'
 # Your Cc avenue API credentials
 
 
-workingKey = "1ED377C8D4316E3330503FC2188622A1"
-accessCode = "AVOF80KF60BS22FOSB"
+workingKey = os.environ.get("WORKING_KEY")
+accessCode = os.environ.get("ACCESS_CODE")
 
 
 
@@ -71,6 +93,21 @@ def increment_receipt_number():
     # Return the new receipt number
     return str(new_receipt_number)
 
+def increment_receipt_number():
+    # Get the current receipt number
+    current_receipt_number = int(get_current_receipt_number())
+
+    # Increment the receipt number by one
+    new_receipt_number = current_receipt_number + 1
+
+    # Update the storage with the new receipt number
+    # Example: write to a file
+    with open("receipt_number.txt", "w") as file:
+        file.write(str(new_receipt_number))
+
+    # Return the new receipt number
+    return str(new_receipt_number)
+
 
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -78,9 +115,10 @@ from email.mime.text import MIMEText
 
 
 def send_receipt(receiver_mail, rendered_html):
-    my_email = "singhalshivek24@gmail.com"
-    password = "lzjkbgcrngzalkhc"
+    my_email = os.environ.get('MY_EMAIL')
+    password = os.environ.get('PASSWORD')
     smtp_server = "smtp.gmail.com"
+    email_subject = os.environ.get("EMAIL_SUBJECT")
     smtp_port = 587
 
     inlined_html = transform(rendered_html)
@@ -88,7 +126,7 @@ def send_receipt(receiver_mail, rendered_html):
     msg = MIMEMultipart()
     msg["From"] = my_email
     msg["To"] = receiver_mail
-    msg["Subject"] = "Test Email"
+    msg["Subject"] = email_subject
 
     body = MIMEText(inlined_html, "html")
     msg.attach(body)
@@ -133,9 +171,9 @@ def image_to_base64(image_path):
 
 # Dictionary of name-password pairs
 
-name_password_pairs = dict(Priyanshi='priyanshi_password', Kajal='kajal_password', Jhilmil='jhilmil_password',
-                           Rubani='rubani_password', Jahnvi='jahnvi_password', Muskan='muskan_password',
-                           Tarun='tarun_password')
+name_password_pairs = dict(Priyanshi=os.environ.get("PRIYANSHI_PASSWORD"), Kajal=os.environ.get("KAJAL_PASSWORD"), Jhilmil=os.environ.get("JHILMIL_PASSWORD"),
+                           Rubani=os.environ.get("RUBANI_PASSWORD"), Jahnvi=os.environ.get("JAHNVI_PASSWORD"), Muskan=os.environ.get("MUSKAN_PASSWORD"),
+                           Tarun=os.environ.get("TARUN_PASSWORD"))
 
 
 @app.route('/static/<path:filename>')
@@ -153,7 +191,8 @@ def registration_form_dropin():
 @app.route('/dropinbatch', methods=['GET', 'POST'])
 def select_dropin():
     global name, phone, email, studio
-
+    three_months_validty = os.environ.get('THREE_MONTHS_VALIDITY')
+    grid_validity = os.environ.get('GRID_VALIDITY')
     name = request.form['name']
     phone = request.form['phone']
     email = request.form['email']
@@ -169,7 +208,7 @@ def select_dropin():
     else:
         batch_scenario = "once"
 
-    return render_template('selectdropin.html', dropin_studio=studio, batch_scenario=batch_scenario)
+    return render_template('selectdropin.html', dropin_studio=studio, batch_scenario=batch_scenario, three_months_validty=three_months_validty,grid_validity=grid_validity)
 
 
 # Registration Form
@@ -188,15 +227,13 @@ def registration_form():
 # def payment_method():
 @app.route('/batch', methods=['GET', 'POST'])
 def select_batch():
-    global name, phone, email, studio, promo_code
+    global name, phone, email, studio, promo_code_applied, batch_scenario
 
     name = request.form['name']
     phone = request.form['phone']
     email = request.form['email']
     studio = request.form['Studio']
-    promo_code = request.form['promo']
-
-
+    promo_code_applied = request.form['promo']
 
 
 
@@ -213,84 +250,97 @@ def select_batch():
 
     promo_data = load_promo_data("promo_data.json")
     if promo_data is not None:
+        discount = int(apply_promo_code(name, email, phone, promo_code_applied, filename="promo_code.json"))
+        if promo_code_applied == "":
+            discount = 0
+            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount)
 
-        if apply_promo_code(name, email, phone, promo_code, filename="promo_code.json"):
-            with open("promo_code.json", 'r') as json_file:
-                data = json.load(json_file)
-                discount = 0
+        if discount > 0:
+            print(discount)
+            # with open("promo_code.json", 'r') as json_file:
+            #     data = json.load(json_file)
+            #     discount = 0
 
-                for item in data:
-                    if isinstance(item, dict) and 'promo_code' in item and item['promo_code'] == promo_code:
-                        if 'amount' in item:
-                            discount = item['amount']
-                            print(discount)
-                        break
+            #     for item in data:
+            #         if isinstance(item, dict) and 'promo_code' in item and item['promo_code'] == promo_code:
+            #             if 'amount' in item:
+            #                 discount = item['amount']
+            #                 print(discount)
+            #             break
 
             return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount, promo_message=f"Promo Code worth {discount} applied successfully")
-        if promo_code == "":
-            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=0)
-        else:
-            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=0, promo_message=f"Invalid Promo Code")
+        if discount == 0:
+            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount, promo_message=f"Promo Code expired or invalid user details")
 
 
 @app.route('/payment', methods=['GET', 'POST'])
 def make_payment():
-    global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date
+    print(request.form['fee'])
+    if request.form['fee'] == 0 or request.form['fee'] == "":
+        print("Cancelled")
+        return redirect(url_for('select_batch'))
+        flash("Select 1 batch")
+    else:
+
+        global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date, fee_without_gst
 
 
+        order_receipt = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
 
-    p_merchant_id = "2538003"
-    p_order_id = "89q98948"
-    p_currency = 'INR'
-    p_redirect_url = url_for('payment_successful')
-    p_cancel_url = url_for('payment_failed')
+        p_merchant_id = os.environ.get('MERCHANT_ID')
+        p_order_id = f"order_{order_receipt}"
+        p_currency = 'INR'
+        p_redirect_url = url_for('payment_successful')
+        p_cancel_url = url_for('payment_failed')
 
-    fee_without_gst = request.form['fee']
-    fee = str(round(float(fee_without_gst)*1.18))
-    batches = request.form.getlist('batch[]')
-    paid_to = "Pink Grid"
-    validity = request.form['validity']
-    merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + fee + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
-    encryption = encrypt(merchant_data, workingKey)
+        batches = request.form.getlist('batch[]')
+        fee_without_gst = request.form['fee']
+        fee = str(round(float(fee_without_gst)*1.18))
+        paid_to = "Pink Grid"
+        validity = request.form['validity']
+        merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + fee + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
+        encryption = encrypt(merchant_data, workingKey)
 
-    order_receipt = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
 
-    if validity == "two_months_grid":
-        validity = "August, September, Grid 2.0"
+        if validity == "two_months_grid":
+            validity = "August, September, Grid 2.0"
 
-    if validity == "three_months":
-        validity = "August, September, December"
-    if validity == "grid":
-        validity = "Grid 2.0"
-    if validity == "Drop In":
-        dropin_date = request.form['dropin_date']
+        if validity == "three_months":
+            validity = "August, September, December"
+        if validity == "grid":
+            validity = "Grid 2.0"
+        if validity == "Drop In":
+            dropin_date = request.form['dropin_date']
+            batch = request.form['batch']
+            batches = batch
+            print(batches)
 
-    # Get the selected batches as a list
+        # Get the selected batches as a list
 
-    #     # Create a new order in Razorpay
-    # order_amount = int(float(fee) * 100)  # Convert fee to the smallest currency unit (in paisa)
-    # order_currency = 'INR'
-    #
-    # order_data = {
-    #         'amount': order_amount,
-    #         'currency': order_currency,
-    #         'receipt': order_receipt,
-    #         'payment_capture': 1,  # Auto-capture the payment
-    #         # Add any other parameters as required
-    #     }
-    #
-    # order_response = razorpay_client.order.create(data=order_data)
-    #
-    # if order_response.get('id'):
-    #     order_id = order_response['id']
-    #
-    #     # Redirect the user to the Razorpay payment page
-    #     return render_template("pay.html", payment=order_response)
-    # else:
-    #     # Failed to create the order
-    #     return render_template('failed.html')
+        #     # Create a new order in Razorpay
+        # order_amount = int(float(fee) * 100)  # Convert fee to the smallest currency unit (in paisa)
+        # order_currency = 'INR'
+        #
+        # order_data = {
+        #         'amount': order_amount,
+        #         'currency': order_currency,
+        #         'receipt': order_receipt,
+        #         'payment_capture': 1,  # Auto-capture the payment
+        #         # Add any other parameters as required
+        #     }
+        #
+        # order_response = razorpay_client.order.create(data=order_data)
+        #
+        # if order_response.get('id'):
+        #     order_id = order_response['id']
+        #
+        #     # Redirect the user to the Razorpay payment page
+        #     return render_template("pay.html", payment=order_response)
+        # else:
+        #     # Failed to create the order
+        #     return render_template('failed.html')
 
-    return render_template('pay.html', mid=p_merchant_id, encReq=encryption, order_id=p_order_id, xscode=accessCode)
+        return render_template('pay.html', mid=p_merchant_id, encReq=encryption, order_id=p_order_id, xscode=accessCode)
 
 
 @app.route('/cash_payment', methods=['GET', 'POST'])
@@ -324,7 +374,6 @@ def payment_successful():
     batch_str = ', '.join(batches)  # Join the batches list with a comma separator
     today_date = datetime.today().strftime('%d-%b-%Y')
     source = request.args.get('source')
-    promo_code = "N/A"
     if source == "Cash":
         mode_of_payment = "Cash"
         paid_to = wingperson_name
@@ -334,13 +383,18 @@ def payment_successful():
         paid_to = "Pink Grid"
 
     if validity == "Drop In":
-        promo_data = load_promo_data("promo_data.json")
+        batch_str = batches
+        promo_data = load_promo_data("promo_code.json")
 
-        if promo_data is not None:
+        # if promo_data is not None:
 
-            promo_code = create_promo_json(name, email, phone, fee, dropin_date, "promo_code.json")
+        promo_code = create_promo_json(name, email, phone, fee_without_gst, dropin_date, "promo_code.json")
 
 
+    else:
+        remove_promo_code(name, email, phone, promo_code_applied, filename="promo_code.json")
+
+    promo_code = "N/A"
 
 
     print(source)

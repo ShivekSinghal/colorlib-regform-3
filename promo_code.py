@@ -64,14 +64,28 @@ def apply_promo_code(name, email, phone, promo_code, filename):
                 and promo_entry.get("promo_code") == promo_code
                 and check_promo_validity(datetime.strptime(promo_entry["expiry"], "%Y-%m-%d %H:%M:%S"))
             ):
-                promo_data.remove(promo_entry)
 
-                with open(filename, 'w') as json_file:
-                    json.dump(promo_data, json_file, indent=4)
+                return promo_entry.get('amount')
+            else:
+                return 0
 
-                return True
-
-        return False  # No matching or valid promo code found
+        return 0  # No matching or valid promo code found
 
     except (FileNotFoundError, json.JSONDecodeError, KeyError):
         return False  # Handle exceptions gracefully
+
+def remove_promo_code(name, email, phone, promo_code, filename):
+    promo_data = load_promo_data(filename)
+
+    for promo_entry in promo_data:
+        if (
+                promo_entry.get("name") == name
+                and promo_entry.get("email") == email
+                and promo_entry.get("phone") == phone
+                and promo_entry.get("promo_code") == promo_code
+                and check_promo_validity(datetime.strptime(promo_entry["expiry"], "%Y-%m-%d %H:%M:%S"))
+        ):
+            promo_data.remove(promo_entry)
+
+            with open(filename, 'w') as json_file:
+                json.dump(promo_data, json_file, indent=4)
