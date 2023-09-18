@@ -28,8 +28,8 @@ client = gspread.authorize(credentials)
 
 os.environ['SHEET_KEY'] = '1cJdiWjKzOMK6kVkPWBfhBVGTy_bsxDBwDbwlagkQfY4'
 os.environ['SHEET_NAME'] = 'Sheet1'
-os.environ['WORKING_KEY'] = "1ED377C8D4316E3330503FC2188622A1"
-os.environ['ACCESS_CODE'] = "AVOF80KF60BS22FOSB"
+os.environ['WORKING_KEY'] = "868E43E034DB2953A9E18EC401CA3268	"
+os.environ['ACCESS_CODE'] = "AVKR14KI19BL44RKLB"
 os.environ['MERCHANT_ID'] = "2538003"
 os.environ['THREE_MONTHS_VALIDITY'] = "false"
 os.environ['GRID_VALIDITY'] = "false"
@@ -374,10 +374,7 @@ def make_payment():
     else:
 
         global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date, fee_without_gst
-
-
         order_receipt = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
-
         p_merchant_id = os.environ.get('MERCHANT_ID')
         p_order_id = f"order_{order_receipt}"
         p_currency = 'INR'
@@ -391,11 +388,8 @@ def make_payment():
         validity = request.form['validity']
         merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + fee + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
         encryption = encrypt(merchant_data, workingKey)
-
-
         if validity == "two_months_grid":
             validity = "August, September, Grid 2.0"
-
         if validity == "three_months":
             validity = "August, September, December"
         if validity == "grid":
@@ -405,6 +399,7 @@ def make_payment():
             batch = request.form['batch']
             batches = batch
             print(batches)
+
 
         # Get the selected batches as a list
 
@@ -430,6 +425,7 @@ def make_payment():
         # else:
         #     # Failed to create the order
         #     return render_template('failed.html')
+
 
         return render_template('pay.html', mid=p_merchant_id, encReq=encryption, order_id=p_order_id, xscode=accessCode)
 
@@ -490,7 +486,7 @@ def payment_successful():
 
     print(source)
 
-    row = [today_date, name, phone, email, batch_str, fee, "#" + order_receipt, validity, p_order_id, studio,
+    row = [today_date, name, phone, email, "#" + order_receipt, validity, batch_str, fee, p_order_id, studio,
            mode_of_payment, paid_to, promo_code]
     gross_amount = round(float(fee) / 1.18, 2)
     gst = round(gross_amount * 0.18, 2)
