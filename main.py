@@ -1,4 +1,3 @@
-
 import smtplib
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify, flash
 import os
@@ -47,12 +46,14 @@ os.environ['TARUN_PASSWORD'] = "tarun_password"
 sheet_key = os.environ.get('SHEET_KEY')
 sheet_name = os.environ.get('SHEET_NAME')
 
-#PROMO CODE HANDLER
+
+# PROMO CODE HANDLER
 
 
 def generate_random_promo_code(length=8):
     characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
     return ''.join(random.choice(characters) for _ in range(length))
+
 
 def load_promo_data(filename):
     try:
@@ -71,11 +72,13 @@ def load_promo_data(filename):
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
+
 def check_promo_validity(expiry_date):
     try:
         return expiry_date >= datetime.now()
     except ValueError:
         return False  # Handle invalid date format
+
 
 def create_promo_json(name, email, phone, amount, dropin_date, filename):
     promo_code = generate_random_promo_code()
@@ -99,17 +102,18 @@ def create_promo_json(name, email, phone, amount, dropin_date, filename):
 
     return promo_code  # Return the generated promo code
 
+
 def apply_promo_code(name, email, phone, promo_code, filename):
     try:
         promo_data = load_promo_data(filename)
 
         for promo_entry in promo_data:
             if (
-                promo_entry.get("name") == name
-                and promo_entry.get("email") == email
-                and promo_entry.get("phone") == phone
-                and promo_entry.get("promo_code") == promo_code
-                and check_promo_validity(datetime.strptime(promo_entry["expiry"], "%Y-%m-%d %H:%M:%S"))
+                    promo_entry.get("name") == name
+                    and promo_entry.get("email") == email
+                    and promo_entry.get("phone") == phone
+                    and promo_entry.get("promo_code") == promo_code
+                    and check_promo_validity(datetime.strptime(promo_entry["expiry"], "%Y-%m-%d %H:%M:%S"))
             ):
                 print("applied")
                 return promo_entry.get('amount')
@@ -120,6 +124,7 @@ def apply_promo_code(name, email, phone, promo_code, filename):
 
     except (FileNotFoundError, json.JSONDecodeError, KeyError):
         return False  # Handle exceptions gracefully
+
 
 def remove_promo_code(name, email, phone, promo_code, filename):
     promo_data = load_promo_data(filename)
@@ -138,7 +143,6 @@ def remove_promo_code(name, email, phone, promo_code, filename):
                 json.dump(promo_data, json_file, indent=4)
 
 
-
 ##
 
 # Razorpay payment gateway credentials
@@ -153,7 +157,6 @@ def remove_promo_code(name, email, phone, promo_code, filename):
 
 workingKey = os.environ.get("WORKING_KEY")
 accessCode = os.environ.get("ACCESS_CODE")
-
 
 
 # Receipt Number Generation
@@ -183,6 +186,7 @@ def increment_receipt_number():
 
     # Return the new receipt number
     return str(new_receipt_number)
+
 
 def increment_receipt_number():
     # Get the current receipt number
@@ -262,8 +266,10 @@ def image_to_base64(image_path):
 
 # Dictionary of name-password pairs
 
-name_password_pairs = dict(Priyanshi=os.environ.get("PRIYANSHI_PASSWORD"), Kajal=os.environ.get("KAJAL_PASSWORD"), Jhilmil=os.environ.get("JHILMIL_PASSWORD"),
-                           Rubani=os.environ.get("RUBANI_PASSWORD"), Jahnvi=os.environ.get("JAHNVI_PASSWORD"), Muskan=os.environ.get("MUSKAN_PASSWORD"),
+name_password_pairs = dict(Priyanshi=os.environ.get("PRIYANSHI_PASSWORD"), Kajal=os.environ.get("KAJAL_PASSWORD"),
+                           Jhilmil=os.environ.get("JHILMIL_PASSWORD"),
+                           Rubani=os.environ.get("RUBANI_PASSWORD"), Jahnvi=os.environ.get("JAHNVI_PASSWORD"),
+                           Muskan=os.environ.get("MUSKAN_PASSWORD"),
                            Tarun=os.environ.get("TARUN_PASSWORD"))
 
 
@@ -299,7 +305,8 @@ def select_dropin():
     else:
         batch_scenario = "once"
 
-    return render_template('selectdropin.html', dropin_studio=studio, batch_scenario=batch_scenario, three_months_validty=three_months_validty,grid_validity=grid_validity)
+    return render_template('selectdropin.html', dropin_studio=studio, batch_scenario=batch_scenario,
+                           three_months_validty=three_months_validty, grid_validity=grid_validity)
 
 
 # Registration Form
@@ -307,10 +314,7 @@ def select_dropin():
 
 @app.route('/', methods=['GET', 'POST'])
 def registration_form():
-
     return render_template('index.html')
-
-
 
 
 #
@@ -325,8 +329,6 @@ def select_batch():
     email = request.form['email']
     studio = request.form['Studio']
     promo_code_applied = request.form['promo']
-
-
 
     batch_scenario = ""
     if studio in ["Noida", "Rajouri Garden", "Pitampura"]:
@@ -359,9 +361,11 @@ def select_batch():
             #                 print(discount)
             #             break
 
-            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount, promo_message=f"Promo Code worth {discount} applied successfully")
+            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount,
+                                   promo_message=f"Promo Code worth {discount} applied successfully")
         if discount == 0:
-            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount, promo_message=f"Promo Code expired or invalid user details")
+            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount,
+                                   promo_message=f"Promo Code expired or invalid user details")
 
 
 @app.route('/payment', methods=['GET', 'POST'])
@@ -383,7 +387,7 @@ def make_payment():
 
         batches = request.form.getlist('batch[]')
         fee_without_gst = request.form['fee']
-        fee = str(round(float(fee_without_gst)*1.18))
+        fee = str(round(float(fee_without_gst) * 1.18))
         paid_to = "Pink Grid"
         validity = request.form['validity']
         merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + fee + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
@@ -399,7 +403,6 @@ def make_payment():
             batch = request.form['batch']
             batches = batch
             print(batches)
-
 
         # Get the selected batches as a list
 
@@ -426,8 +429,8 @@ def make_payment():
         #     # Failed to create the order
         #     return render_template('failed.html')
 
-
-        return render_template('pay.html', mid=p_merchant_id, encReq=encryption, order_id=p_order_id, xscode=accessCode)
+        return render_template('pay.html', mid=p_merchant_id, encReq=encryption, fee=fee, cancel_url=p_cancel_url,
+                               redirect_url=p_redirect_url, order_id=p_order_id, currency=p_currency, xscode=accessCode)
 
 
 @app.route('/cash_payment', methods=['GET', 'POST'])
@@ -482,7 +485,6 @@ def payment_successful():
         remove_promo_code(name, email, phone, promo_code_applied, filename="promo_code.json")
 
         promo_code = "N/A"
-
 
     print(source)
 

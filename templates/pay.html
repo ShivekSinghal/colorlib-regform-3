@@ -128,8 +128,10 @@ document.getElementById("payment-button1").addEventListener("click", function() 
     // Replace this with CC Avenue's API integration logic
     // Redirect the user to CC Avenue's payment page for bank transfer
 
-    var bankTransferUrl = "https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode";  // Replace with the actual route to CC Avenue's bank transfer page
-<!--    var bankTransferUrl = "https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&amount=${fee}&order_id=${order_id}&currency=${currency}&redirect_url=${redirect_url}&cancel_url=${cancel_url}&access_code=$xscode";  // Replace with the actual route to CC Avenue's bank transfer page-->
+<!--    var bankTransferUrl = "https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode";  // Replace with the actual route to CC Avenue's bank transfer page-->
+    var bankTransferUrl = "https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id={{ mid }}&amount={{ fee }}&order_id={{ order_id }}&currency={{ currency }}&redirect_url={{ redirect_url }}&cancel_url={{ cancel_url }}&access_code={{ xscode }}";  // Use double curly braces to interpolate Flask variables
+
+<!--    var bankTransferUrl = "https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=${mid}&amount=${fee}&order_id=${order_id}&currency=${currency}&redirect_url=${redirect_url}&cancel_url=${cancel_url}&access_code=${xscode}";  // Replace with the actual route to CC Avenue's bank transfer page-->
     window.open(bankTransferUrl);
     // Open the iframe with the CC Avenue bank transfer page
 <!--    var iframeHtml = `-->
