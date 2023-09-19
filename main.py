@@ -382,6 +382,7 @@ def make_payment():
         global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date, fee_without_gst
         order_receipt = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
 
+
         batches = request.form.getlist('batch[]')
         fee_without_gst = request.form['fee']
         fee = str(round(float(fee_without_gst) * 1.18))
@@ -389,6 +390,21 @@ def make_payment():
         validity = request.form['validity']
         # merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + fee + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
         # encryption = encrypt(merchant_data, workingKey)
+
+        p_merchant_id = os.environ.get('MERCHANT_ID')
+        p_order_id = f"order_{order_receipt}"
+        p_currency = 'INR'
+        p_amount = fee
+        p_redirect_url = url_for('payment_successful')
+        p_cancel_url = url_for('payment_failed')
+
+        merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + p_amount + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
+
+        encryption = encrypt(merchant_data, workingKey)
+        mid = p_merchant_id
+        xscode = accessCode
+        enReq = encryption
+
         if validity == "two_months_grid":
             validity = "August, September, Grid 2.0"
         if validity == "three_months":
@@ -426,7 +442,7 @@ def make_payment():
         #     # Failed to create the order
         #     return render_template('failed.html')
 
-        return render_template('pay.html')
+        return render_template('pay.html', mid=p_merchant_id, encReq=encryption, xscode=accessCode)
 
 
 @app.route('/ccavRequestHandler', methods=['GET', 'POST'])
@@ -568,3 +584,4 @@ def payment_failed():
 
 if __name__ == '__main__':
     app.run(debug=True, port=4900)
+
