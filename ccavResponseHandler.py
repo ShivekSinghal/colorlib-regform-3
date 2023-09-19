@@ -8,7 +8,7 @@ def res(encResp):
     '''
     Please put in the 32 bit alphanumeric key in quotes provided by CCAvenues.
     '''
-    workingKey = '1ED377C8D4316E3330503FC2188622A1	'
+    workingKey = '868E43E034DB2953A9E18EC401CA3268'
     decResp = decrypt(encResp, workingKey)
     data = '<table border=1 cellspacing=2 cellpadding=2><tr><td>'
     data = data + decResp.replace('=', '</td><td>')

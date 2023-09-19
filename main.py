@@ -12,6 +12,8 @@ from ccavutil import encrypt, decrypt
 import json
 import random
 from datetime import datetime, timedelta
+from string import Template
+
 
 # import hmac
 # import hashlib
@@ -379,19 +381,14 @@ def make_payment():
 
         global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date, fee_without_gst
         order_receipt = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
-        p_merchant_id = os.environ.get('MERCHANT_ID')
-        p_order_id = f"order_{order_receipt}"
-        p_currency = 'INR'
-        p_redirect_url = url_for('payment_successful')
-        p_cancel_url = url_for('payment_failed')
 
         batches = request.form.getlist('batch[]')
         fee_without_gst = request.form['fee']
         fee = str(round(float(fee_without_gst) * 1.18))
         paid_to = "Pink Grid"
         validity = request.form['validity']
-        merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + fee + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
-        encryption = encrypt(merchant_data, workingKey)
+        # merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + fee + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
+        # encryption = encrypt(merchant_data, workingKey)
         if validity == "two_months_grid":
             validity = "August, September, Grid 2.0"
         if validity == "three_months":
@@ -429,8 +426,57 @@ def make_payment():
         #     # Failed to create the order
         #     return render_template('failed.html')
 
-        return render_template('pay.html', mid=p_merchant_id, encReq=encryption, fee=fee, cancel_url=p_cancel_url,
-                               redirect_url=p_redirect_url, order_id=p_order_id, currency=p_currency, xscode=accessCode)
+        return render_template('pay.html')
+
+
+@app.route('/ccavRequestHandler', methods=['GET', 'POST'])
+def login():
+    p_merchant_id = os.environ.get('MERCHANT_ID')
+    p_order_id = f"order_{order_receipt}"
+    p_currency = 'INR'
+    p_amount = fee
+    p_redirect_url = url_for('payment_successful')
+    p_cancel_url = url_for('payment_failed')
+
+
+
+
+    merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + p_amount + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
+
+    encryption = encrypt(merchant_data, workingKey)
+    mid= p_merchant_id
+    xscode = accessCode
+    enReq = encryption
+
+
+    html = '''\
+    <html>
+    <head>
+        <title>Sub-merchant checkout page</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    </head>
+    <body>
+        <center>
+        <!-- width required mininmum 482px -->
+            <iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode">
+            </iframe>
+        </center>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('iframe#paymentFrame').load(function() {
+                     window.addEventListener('message', function(e) {
+                         $("#paymentFrame").css("height",e.data['newHeight']+'px'); 	 
+                     }, false);
+                 }); 
+            });
+        </script>
+      </body>
+    </html>
+    '''
+    fin = Template(html).safe_substitute(mid=p_merchant_id, encReq=encryption, xscode=accessCode)
+
+    return fin
 
 
 @app.route('/cash_payment', methods=['GET', 'POST'])

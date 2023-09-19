@@ -10,8 +10,8 @@ app = Flask('ccavRequestHandler')
 '''
 Please put in the 32 bit alphanumeric key and Access Code in quotes provided by CCAvenues.
 '''
-accessCode = 'AVOF80KF60BS22FOSB'
-workingKey = '1ED377C8D4316E3330503FC2188622A1'
+accessCode = 'AVKR14KI19BL44RKLB'
+workingKey = '868E43E034DB2953A9E18EC401CA3268'
 
 
 @app.route('/')
@@ -39,30 +39,30 @@ def login():
     encryption = encrypt(merchant_data, workingKey)
 
     html = '''\
-<html>
-<head>
-	<title>Sub-merchant checkout page</title>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-</head>
-<body>
-    <center>
-	<!-- width required mininmum 482px -->
-       	<iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode">
-	  	</iframe>
-	</center>
-
-	<script type="text/javascript">
-    	$(document).ready(function(){
-    		$('iframe#paymentFrame').load(function() {
-				 window.addEventListener('message', function(e) {
-			    	 $("#paymentFrame").css("height",e.data['newHeight']+'px'); 	 
-			 	 }, false);
-			 }); 
-    	});
-	</script>
-  </body>
-</html>
-'''
+    <html>
+    <head>
+        <title>Sub-merchant checkout page</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    </head>
+    <body>
+        <center>
+        <!-- width required mininmum 482px -->
+            <iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode">
+            </iframe>
+        </center>
+    
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('iframe#paymentFrame').load(function() {
+                     window.addEventListener('message', function(e) {
+                         $("#paymentFrame").css("height",e.data['newHeight']+'px'); 	 
+                     }, false);
+                 }); 
+            });
+        </script>
+      </body>
+    </html>
+    '''
     fin = Template(html).safe_substitute(mid=p_merchant_id, encReq=encryption, xscode=accessCode)
 
     return fin
