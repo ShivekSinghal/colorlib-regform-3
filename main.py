@@ -29,7 +29,7 @@ client = gspread.authorize(credentials)
 
 os.environ['SHEET_KEY'] = '1cJdiWjKzOMK6kVkPWBfhBVGTy_bsxDBwDbwlagkQfY4'
 os.environ['SHEET_NAME'] = 'Sheet1'
-os.environ['WORKING_KEY'] = "868E43E034DB2953A9E18EC401CA3268	"
+os.environ['WORKING_KEY'] = "868E43E034DB2953A9E18EC401CA3268"
 os.environ['ACCESS_CODE'] = "AVKR14KI19BL44RKLB"
 os.environ['MERCHANT_ID'] = "2538003"
 os.environ['THREE_MONTHS_VALIDITY'] = "false"
@@ -497,14 +497,39 @@ def login():
 
 @app.route('/cash_payment', methods=['GET', 'POST'])
 def cash_payment():
-    return render_template('cash.html', fee=fee)
+    global wingperson
+    wingperson = ""
+    if studio == "Noida":
+        wingperson = "Priyanshi"
+        location = "https://maps.app.goo.gl/EA75L86kCKT72H6N8"
+    if studio == "Rajouri Garden":
+        wingperson = "Kajal"
+        location = "https://maps.app.goo.gl/RqP29GsxekCRALrU9"
+    if studio == "Pitampura":
+        wingperson = "Rubani"
+        location = "https://maps.app.goo.gl/NMtbTXxBnV5rbBjB9"
+    if studio == "South Delhi":
+        wingperson = "Jhilmil"
+        location = "https://maps.app.goo.gl/FmzSXf8M12qKtN4r9"
+    if studio == "East Delhi":
+        wingperson = "Muskan"
+        location = "https://maps.app.goo.gl/6qcLECimcCqzSHEa7"
+    if studio == "Gurgaon":
+        wingperson = "Jahnvi"
+        location = "https://maps.app.goo.gl/p7G3kMkHaxGgP4Z98"
+    if studio == "Indirapuram":
+        wingperson = "Tarun"
+        location = "https://maps.app.goo.gl/xechLGU3XpZ1QX3J7"
+
+    return render_template('cash.html',studio=studio, fee=fee, wingperson=wingperson, location=location)
 
 
 @app.route('/process_cash', methods=['GET', 'POST'])
 def process_cash():
     if request.method == "POST":
         global wingperson_name
-        wingperson_name = request.form.get('wingperson_name')
+        # wingperson_name = request.form.get('wingperson_name')
+        wingperson_name = wingperson
         password = request.form.get('password')
         mode_of_payment = "Cash"
 
