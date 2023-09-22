@@ -442,7 +442,36 @@ def make_payment():
         #     # Failed to create the order
         #     return render_template('failed.html')
 
-        return render_template('pay.html', mid=p_merchant_id, encReq=encryption, xscode=accessCode)
+        html = '''\
+            <html>
+            <head>
+                <title>Sub-merchant checkout page</title>
+                <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+            </head>
+            <body>
+                <center>
+                <!-- width required mininmum 482px -->
+                    <iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode">
+                    </iframe>
+                </center>
+
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $('iframe#paymentFrame').load(function() {
+                             window.addEventListener('message', function(e) {
+                                 $("#paymentFrame").css("height",e.data['newHeight']+'px'); 	 
+                             }, false);
+                         }); 
+                    });
+                </script>
+              </body>
+            </html>
+            '''
+        fin = Template(html).safe_substitute(mid=p_merchant_id, encReq=encryption, xscode=accessCode)
+
+        return fin
+
+        # return render_template('pay.html', mid=p_merchant_id, encReq=encryption, xscode=accessCode)
 
 
 @app.route('/ccavRequestHandler', methods=['GET', 'POST'])
