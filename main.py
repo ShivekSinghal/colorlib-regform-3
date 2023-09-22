@@ -13,6 +13,9 @@ import json
 import random
 from datetime import datetime, timedelta
 from string import Template
+import requests
+import urllib.parse
+
 
 
 # import hmac
@@ -467,9 +470,26 @@ def make_payment():
               </body>
             </html>
             '''
-        fin = Template(html).safe_substitute(mid=p_merchant_id, encReq=encryption, xscode=accessCode)
+        parametres = {
+            "command" : "initiateTransaction",
+            "merchant_id" : p_merchant_id,
+            "encRequest" : encryption,
+            "access_code" : xscode
 
-        return fin
+
+
+
+
+        }
+        ccavenue_checkout_url = "https://test.ccavenue.com/transaction/transaction.do"
+        redirect_url = ccavenue_checkout_url + "?" + urllib.parse.urlencode(parametres)
+
+        # response = requests.get("https://test.ccavenue.com/transaction/transaction.do", params=parametres)
+        # print(response.text)
+
+        print("Redirecting to CCAvenue checkout:")
+        print(redirect_url)
+        return redirect(redirect_url)
 
         # return render_template('pay.html', mid=p_merchant_id, encReq=encryption, xscode=accessCode)
 
