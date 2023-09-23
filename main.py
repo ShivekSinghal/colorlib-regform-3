@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 from string import Template
 import requests
 import urllib.parse
+from ccavResponseHandler import res
 
 
 
@@ -446,52 +447,56 @@ def make_payment():
         #     return render_template('failed.html')
 
         html = '''\
-            <html>
-            <head>
-                <title>Sub-merchant checkout page</title>
-                <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-            </head>
-            <body>
-                <center>
-                <!-- width required mininmum 482px -->
-                    <iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode">
-                    </iframe>
-                </center>
+        <html>
+        <head>
+            <title>Sub-merchant checkout page</title>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        </head>
+        <body>
+            <center>
+            <!-- width required mininmum 482px -->
+                <iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode">
+                </iframe>
+            </center>
 
-                <script type="text/javascript">
-                    $(document).ready(function(){
-                        $('iframe#paymentFrame').load(function() {
-                             window.addEventListener('message', function(e) {
-                                 $("#paymentFrame").css("height",e.data['newHeight']+'px'); 	 
-                             }, false);
-                         }); 
-                    });
-                </script>
-              </body>
-            </html>
-            '''
-        parametres = {
-            "command" : "initiateTransaction",
-            "merchant_id" : p_merchant_id,
-            "encRequest" : encryption,
-            "access_code" : xscode
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('iframe#paymentFrame').load(function() {
+                         window.addEventListener('message', function(e) {
+                             $("#paymentFrame").css("height",e.data['newHeight']+'px'); 	 
+                         }, false);
+                     }); 
+                });
+            </script>
+          </body>
+        </html>
+        '''
+        fin = Template(html).safe_substitute(mid=p_merchant_id, encReq=encryption, xscode=accessCode)
 
+        return fin
 
-
-
-
-        }
-        ccavenue_checkout_url = "https://test.ccavenue.com/transaction/transaction.do"
-        redirect_url = ccavenue_checkout_url + "?" + urllib.parse.urlencode(parametres)
-
-        # response = requests.get("https://test.ccavenue.com/transaction/transaction.do", params=parametres)
-        # print(response.text)
-
-        print("Redirecting to CCAvenue checkout:")
-        print(redirect_url)
-        return redirect(redirect_url)
-
-        # return render_template('pay.html', mid=p_merchant_id, encReq=encryption, xscode=accessCode)
+        # parametres = {
+        #     "command" : "initiateTransaction",
+        #     "merchant_id" : p_merchant_id,
+        #     "encRequest" : encryption,
+        #     "access_code" : xscode
+        #
+        #
+        #
+        #
+        #
+        # }
+        # ccavenue_checkout_url = "https://test.ccavenue.com/transaction/transaction.do"
+        # redirect_url = ccavenue_checkout_url + "?" + urllib.parse.urlencode(parametres)
+        #
+        # # response = requests.get("https://test.ccavenue.com/transaction/transaction.do", params=parametres)
+        # # print(response.text)
+        #
+        # print("Redirecting to CCAvenue checkout:")
+        # print(redirect_url)
+        # return redirect(redirect_url)
+        #
+        # # return render_template('pay.html', mid=p_merchant_id, encReq=encryption, xscode=accessCode)
 
 
 @app.route('/ccavRequestHandler', methods=['GET', 'POST'])
