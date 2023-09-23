@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Page</title>
+</head>
+<body>
+    <form method="post" action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
+        <input type="hidden" name="merchant_id" value="{{ p_merchant_id }}">
+        <input type="hidden" name="order_id" value="{{ p_order_id }}">
+        <input type="hidden" name="currency" value="{{ p_currency }}">
+        <input type="hidden" name="amount" value="{{ p_amount }}">
+        <input type="hidden" name="redirect_url" value="{{ p_redirect_url }}">
+        <input type="hidden" name="cancel_url" value="{{ p_cancel_url }}">
+        <input type="hidden" name="access_code" value="{{ accessCode }}">
+        <!-- Add the checksum as a hidden input field here -->
+        <!-- <input type="hidden" name="checksum" value="{{ checksum }}"> -->
+        <input type="submit" value="Proceed to Payment">
+    </form>
+</body>
+</html>
