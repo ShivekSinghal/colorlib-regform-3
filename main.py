@@ -498,16 +498,34 @@ def make_payment():
         #
         # # return render_template('pay.html', mid=p_merchant_id, encReq=encryption, xscode=accessCode)
 
-    return render_template(
-        'payment.html',
-        merchant_id=p_merchant_id,
-        order_id=p_order_id,
-        currency=p_currency,
-        amount=p_amount,
-        redirect_url=p_redirect_url,
-        cancel_url=p_cancel_url,
-        access_code=accessCode)
+    # return render_template(
+    #     'payment.html',
+    #     merchant_id=p_merchant_id,
+    #     order_id=p_order_id,
+    #     currency=p_currency,
+    #     amount=p_amount,
+    #     redirect_url=p_redirect_url,
+    #     cancel_url=p_cancel_url,
+    #     access_code=accessCode)
+    #
+    html = '''\
+    <html>
+    <head>
+    	<title>Sub-merchant checkout page</title>
+    	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    </head>
+    <body>
+    <form id="nonseamless" method="post" name="redirect" action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction" > 
+    		<input type="hidden" id="encRequest" name="encRequest" value=$encReq>
+    		<input type="hidden" name="access_code" id="access_code" value=$xscode>
+    		<script language='javascript'>document.redirect.submit();</script>
+    </form>    
+    </body>
+    </html>
+    '''
+    fin = Template(html).safe_substitute(encReq=encryption, xscode=accessCode)
 
+    return fin
 
 
 @app.route('/ccavRequestHandler', methods=['GET', 'POST'])
