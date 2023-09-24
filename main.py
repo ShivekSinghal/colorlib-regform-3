@@ -160,8 +160,8 @@ def remove_promo_code(name, email, phone, promo_code, filename):
 # Your Cc avenue API credentials
 
 
-workingKey = os.environ.get("WORKING_KEY")
-accessCode = os.environ.get("ACCESS_CODE")
+workingKey = "868E43E034DB2953A9E18EC401CA3268"
+accessCode = "AVKR14KI19BL44RKLB"
 
 
 # Receipt Number Generation
@@ -394,14 +394,14 @@ def make_payment():
         # merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + fee + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
         # encryption = encrypt(merchant_data, workingKey)
 
-        p_merchant_id = 2538003
+        p_merchant_id = "2538003"
         p_order_id = f"order_{order_receipt}"
         p_currency = 'INR'
         p_amount = fee
         p_redirect_url = url_for('payment_successful')
         p_cancel_url = url_for('payment_failed')
 
-        merchant_data = 'merchant_id=' + str(p_merchant_id) + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + p_amount + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
+        merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + p_amount + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
         print(merchant_data)
         encryption = encrypt(merchant_data, workingKey)
         mid = p_merchant_id
