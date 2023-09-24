@@ -373,7 +373,7 @@ def select_batch():
                                    promo_message=f"Promo Code expired or invalid user details")
 
 
-@app.route('/payment', methods=['GET', 'POST'])
+@app.route('/payment-method', methods=['GET', 'POST'])
 def make_payment():
     print(request.form['fee'])
     if request.form['fee'] == 0 or request.form['fee'] == "":
@@ -394,19 +394,19 @@ def make_payment():
         # merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + fee + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
         # encryption = encrypt(merchant_data, workingKey)
 
-        p_merchant_id = "2538003"
-        p_order_id = f"order_{order_receipt}"
-        p_currency = 'INR'
-        p_amount = fee
-        p_redirect_url = url_for('payment_successful')
-        p_cancel_url = url_for('payment_failed')
-
-        merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + p_amount + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
-        print(merchant_data)
-        encryption = encrypt(merchant_data, workingKey)
-        mid = p_merchant_id
-        xscode = accessCode
-        enReq = encryption
+        # p_merchant_id = "2538003"
+        # p_order_id = f"order_{order_receipt}"
+        # p_currency = 'INR'
+        # p_amount = fee
+        # p_redirect_url = url_for('payment_successful')
+        # p_cancel_url = url_for('payment_failed')
+        #
+        # merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + p_amount + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
+        # print(merchant_data)
+        # encryption = encrypt(merchant_data, workingKey)
+        # mid = p_merchant_id
+        # xscode = accessCode
+        # enReq = encryption
 
         if validity == "two_months_grid":
             validity = "August, September, Grid 2.0"
@@ -473,12 +473,12 @@ def make_payment():
         # fin = Template(html).safe_substitute(mid=p_merchant_id, encReq=encryption, xscode=accessCode)
         #
         # return fin
-
+        #
         # parametres = {
-        #     "command" : "initiateTransaction",
-        #     "merchant_id" : p_merchant_id,
-        #     "encRequest" : encryption,
-        #     "access_code" : xscode
+        #     "command": "initiateTransaction",
+        #     "merchant_id": p_merchant_id,
+        #     "encRequest": encryption,
+        #     "access_code": xscode
         #
         #
         #
@@ -494,14 +494,14 @@ def make_payment():
         # print("Redirecting to CCAvenue checkout:")
         # print(redirect_url)
         # return redirect(redirect_url)
-        #
-        # # return render_template('pay.html', mid=p_merchant_id, encReq=encryption, xscode=accessCode)
 
-    return render_template(
-        'payment.html',
-        encryption=encryption,
-        access_code=accessCode)
-    #
+        return render_template('pay.html')
+
+    # return render_template(
+    #     'payment.html',
+    #     encryption=encryption,
+    #     access_code=accessCode)
+    # #
     # html = '''\
     # <html>
     # <head>
@@ -522,9 +522,9 @@ def make_payment():
     # return fin
 
 
-@app.route('/ccavRequestHandler', methods=['GET', 'POST'])
-def login():
-    p_merchant_id = os.environ.get('MERCHANT_ID')
+@app.route('/payment', methods=['GET', 'POST'])
+def ccavenue_login():
+    p_merchant_id = "2538003"
     p_order_id = f"order_{order_receipt}"
     p_currency = 'INR'
     p_amount = fee
@@ -541,33 +541,22 @@ def login():
     xscode = accessCode
     enReq = encryption
 
-
     html = '''\
     <html>
     <head>
-        <title>Sub-merchant checkout page</title>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    	<title>Sub-merchant checkout page</title>
+    	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     </head>
     <body>
-        <center>
-        <!-- width required mininmum 482px -->
-            <iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode">
-            </iframe>
-        </center>
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $('iframe#paymentFrame').load(function() {
-                     window.addEventListener('message', function(e) {
-                         $("#paymentFrame").css("height",e.data['newHeight']+'px'); 	 
-                     }, false);
-                 }); 
-            });
-        </script>
-      </body>
+    <form id="nonseamless" method="post" name="redirect" action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction" > 
+    		<input type="hidden" id="encRequest" name="encRequest" value=$encReq>
+    		<input type="hidden" name="access_code" id="access_code" value=$xscode>
+    		<script language='javascript'>document.redirect.submit();</script>
+    </form>    
+    </body>
     </html>
     '''
-    fin = Template(html).safe_substitute(mid=p_merchant_id, encReq=encryption, xscode=accessCode)
+    fin = Template(html).safe_substitute(encReq=encryption, xscode=accessCode)
 
     return fin
 
