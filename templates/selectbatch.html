@@ -99,23 +99,25 @@
       };
 
       var grid_fees = {
-             "Any1": 7552,
-             "Any2": 13688,
-             "Any3": 19706,
-             "Any4": 25724,
-             "All5": 31624,
-             "HHorHL_once": 5192,
-             "HHandHL_once": 9204,
-             "Any1_twiceandHHorHL_once": 11564,
-             "Any1_twiceandHHandHL_once": 15576,
-             "Any2_twiceandHHorHL_once": 17700,
-             "Any2_twiceandHHandHL_once": 21594,
-             "Any3_twiceandHHorHL_once": 23718,
-             "Any4_twiceorHHandHL_once": 29618,
-             "Any3_twiceandHHandHL_once": 27612,
+             "Any1": 6400,
+             "Any2": 11592,
+             "Any3": 16725,
+             "Any4": 21799,
+             "All5": 26814,
+             "HHorHL_once": 4400,
+             "HHandHL_once": 7832,
+             "Any1_twiceandHHorHL_once": 9832,
+             "Any1_twiceandHHandHL_once": 13225,
+             "Any2_twiceandHHorHL_once": 14985,
+             "Any2_twiceandHHandHL_once": 18339,
+             "Any3_twiceandHHorHL_once": 20079,
+             "Any4_twiceorHHandHL_once": 25114,
+             "Any3_twiceandHHandHL_once": 23394,
              "no_selection" : 0
 
         };
+
+
 
         var two_months_grid_fees = {
           "Any1": 11780,
@@ -247,14 +249,17 @@
                             <div class="rs-select2 js-select-simple select--no-search">
                                 <select class="custom-select" name="validity"  required>
 <!--                                    <option disabled="disabled" selected="selected" value="">Validity</option>-->
-                                    <option selected="selected" value="two_months_grid">August, September, Grid</option>
-                                    {% if three_months_validity %}
-                                    <option value="three_months">August, September, December</option>
-                                    {% endif %}
+<!--                                    <option selected="selected" value="two_months_grid">August, September, Grid</option>-->
+                                    <option selected="selected" value="grid">Grid</option>
 
-                                    {% if grid_validity %}
-                                    <option value="grid">Grid</option>
-                                    {% endif %}
+
+<!--                                    {% if three_months_validity %}-->
+<!--                                    <option value="three_months">August, September, December</option>-->
+<!--                                    {% endif %}-->
+
+<!--                                    {% if grid_validity %}-->
+<!--                                    <option value="grid">Grid</option>-->
+<!--                                    {% endif %}-->
 
 
                                 </select>

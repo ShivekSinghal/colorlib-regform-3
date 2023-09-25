@@ -36,7 +36,7 @@ os.environ['SHEET_NAME'] = 'Sheet1'
 os.environ['WORKING_KEY'] = "868E43E034DB2953A9E18EC401CA3268"
 os.environ['ACCESS_CODE'] = "AVKR14KI19BL44RKLB"
 os.environ['THREE_MONTHS_VALIDITY'] = "false"
-os.environ['GRID_VALIDITY'] = "false"
+os.environ['GRID_VALIDITY'] = "true"
 
 # Environment variables with values in the desired format
 os.environ['PRIYANSHI_PASSWORD'] = "priyanshi_password"
@@ -310,8 +310,9 @@ def select_dropin():
     else:
         batch_scenario = "once"
 
+
     return render_template('selectdropin.html', dropin_studio=studio, batch_scenario=batch_scenario,
-                           three_months_validty=three_months_validty, grid_validity=grid_validity)
+                           three_months_validty="true", grid_validity="true")
 
 
 # Registration Form
