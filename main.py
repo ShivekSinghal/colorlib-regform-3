@@ -521,6 +521,8 @@ def make_payment():
     #
     # return fin
 
+workingKey = "868E43E034DB2953A9E18EC401CA3268"
+accessCode = "AVKR14KI19BL44RKLB"
 
 @app.route('/payment', methods=['GET', 'POST'])
 def ccavenue_login():
@@ -548,7 +550,7 @@ def ccavenue_login():
     	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     </head>
     <body>
-    <form id="nonseamless" method="post" name="redirect" action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction" > 
+    <form id="nonseamless" method="post" name="redirect" action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction" > 
     		<input type="hidden" id="encRequest" name="encRequest" value=$encReq>
     		<input type="hidden" name="access_code" id="access_code" value=$xscode>
     		<script language='javascript'>document.redirect.submit();</script>
