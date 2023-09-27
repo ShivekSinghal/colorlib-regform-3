@@ -152,7 +152,7 @@
             return false;
         }
 
-        if (selectedStudio === "Select Studio") {
+        if (selectedStudio === "no_studio") {
             alert("Please select a studio.");
             return false;
         }
@@ -203,14 +203,14 @@
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
                                 <select class="custom-select" name="Studio" id="studioDropdown" required>
-                                    <option disabled="disabled" selected="selected">Select Studio</option>
-                                    <option>Noida</option>
-                                    <option>Rajouri Garden</option>
-                                    <option>Pitampura</option>
-                                    <option>Gurgaon</option>
-                                    <option>South Delhi</option>
-                                    <option>East Delhi</option>
-                                    <option>Indirapuram</option>
+                                    <option disabled="disabled" selected="selected" value="no_studio">Select Studio</option>
+                                    <option value="Noida">Noida</option>
+                                    <option value="Rajouri Garden">Rajouri Garden</option>
+                                    <option value="Pitampura">Pitampura</option>
+                                    <option value="Gurgaon">Gurgaon</option>
+                                    <option value="South Delhi">South Delhi</option>
+                                    <option value="East Delhi">East Delhi</option>
+                                    <option value="Indirapuram">Indirapuram</option>
                                 </select>
 
 

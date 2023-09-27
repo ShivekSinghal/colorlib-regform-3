@@ -644,7 +644,7 @@ def payment_successful():
 
     print(source)
 
-    row = [today_date, name, phone, email, "#" + order_receipt, validity, batch_str, fee, p_order_id, studio,
+    row = [today_date, name, phone, email, "#" + order_receipt, validity, batch_str, fee, studio,
            mode_of_payment, paid_to, promo_code]
     gross_amount = round(float(fee) / 1.18, 2)
     gst = round(gross_amount * 0.18, 2)
