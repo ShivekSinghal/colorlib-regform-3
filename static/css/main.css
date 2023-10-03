@@ -113,9 +113,17 @@ button {
 /* ==========================================================================
    #PAGE WRAPPER
    ========================================================================== */
+
 .page-wrapper {
   min-height: 100vh;
+  background: url("../images/comapny-members-2.png");
+  backdrop-filter: blur(5px);
+  background-size : 100%;
+
+
 }
+
+
 
 body {
   font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
@@ -304,7 +312,7 @@ input[type="date" i] {
     padding-right : 10px;
     padding-left : 0px;
     border: 1px solid #000;
-    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.5);
     color: #fff;
 }
 
@@ -450,7 +458,7 @@ label{
 #feeField {
     padding-left : 20px;
     padding-bottom : 15px;
-    background : #000000;
+    background : rgba(0, 0, 0, 0.5);
 
 }
 .ml-2 {
@@ -565,7 +573,7 @@ label{
 }
 
 .card-3 {
-  background: #000;
+  background: rgba(0, 0, 0, 0.5);
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -574,16 +582,19 @@ label{
   box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
   width: 100%;
   display: table;
+  padding: 20px;
+
 }
 
 @media (min-width: 812px) {
 
     .card-3 .card-heading {
-      background: url("../images/hashtag_canva_final2.png") top left/cover no-repeat;
+      background: url("../images/hashtag_logo.png") top left/cover no-repeat;
+      background-size : cover;
       background-position: left center; /* This will shift the image to the left */
       display: table-cell;
       width: 100%; /* Ensure the element takes up the full width */
-      background-size : cover;
+      background-size : contain;
       object-fit: cover;
 
 
@@ -596,7 +607,7 @@ label{
 }}
 @media (max-width: 812px) {
     .card-3 .card-heading {
-      background: url("../images/hashtag_canva_final.png") top left/cover no-repeat;
+      background: url("../images/hashtag_logo.png") top left/cover no-repeat;
       background-position: left center; /* This will shift the image to the left */
       display: table-cell;
       width: 100%; /* Ensure the element takes up the full width */

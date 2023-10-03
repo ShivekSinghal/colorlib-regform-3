@@ -182,13 +182,13 @@
 
 
 <body>
-    <div class="page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
+    <div class="page-wrapper p-t-180 p-b-100 font-poppins">
         <div class="wrapper wrapper--w780">
             <div class="card card-3">
 
                 <div class="card-heading"></div>
 
-                <div class="card-body" >
+                <div class="card card-3" >
                     <h1 class="title">Registration Form</h1>
                     <form onsubmit="return validateForm()" method="POST" action="{{ url_for('select_batch') }}">
                         <div class="input-group">
@@ -202,7 +202,7 @@
                         </div>
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
-                                <select class="custom-select" name="Studio" id="studioDropdown" required>
+                                <select class="custom-select" name="Studio" id="studioDropdown" required >
                                     <option disabled="disabled" selected="selected" value="no_studio">Select Studio</option>
                                     <option value="Noida">Noida</option>
                                     <option value="Rajouri Garden">Rajouri Garden</option>

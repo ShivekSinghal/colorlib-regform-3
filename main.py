@@ -1,11 +1,8 @@
-import smtplib
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify, flash
 import os
 from oauth2client.service_account import ServiceAccountCredentials
 import gspread
 from premailer import transform
-from datetime import datetime
-from PIL import Image
 import base64
 from email.mime.image import MIMEImage
 from ccavutil import encrypt, decrypt
@@ -13,16 +10,17 @@ import json
 import random
 from datetime import datetime, timedelta
 from string import Template
-import requests
-import urllib.parse
-from ccavResponseHandler import res
+from celery import Celery
 
 
 
-# import hmac
-# import hashlib
+
 
 app = Flask(__name__)
+app.secret_key = '#register_with_hashtag0909'
+
+celery = Celery(app.name, broker='redis://localhost:6379/0')
+
 
 # Google Sheets API credentials
 scopes = ['https://www.googleapis.com/auth/spreadsheets']
@@ -76,6 +74,63 @@ def load_promo_data(filename):
 
     except (FileNotFoundError, json.JSONDecodeError):
         return []
+def get_studio_wingperson(studio):
+    if studio == "Noida":
+        wingperson = "Priyanshi"
+        return wingperson
+    if studio == "Rajouri Garden":
+        wingperson = "Kajal"
+        return wingperson
+
+    if studio == "Pitampura":
+        wingperson = "Rubani"
+        return wingperson
+
+    if studio == "South Delhi":
+        wingperson = "Jhilmil"
+        return wingperson
+
+    if studio == "East Delhi":
+        wingperson = "Muskan"
+        return wingperson
+
+    if studio == "Gurgaon":
+        wingperson = "Jahnvi"
+        return wingperson
+
+    if studio == "Indirapuram":
+        wingperson = "Tarun"
+        return wingperson
+
+
+
+def get_studio_location(studio):
+    if studio == "Noida":
+        location = "https://maps.app.goo.gl/EA75L86kCKT72H6N8"
+        return location
+    if studio == "Rajouri Garden":
+        location = "https://maps.app.goo.gl/RqP29GsxekCRALrU9"
+        return location
+    if studio == "Pitampura":
+        location = "https://maps.app.goo.gl/NMtbTXxBnV5rbBjB9"
+        return location
+
+    if studio == "South Delhi":
+        location = "https://maps.app.goo.gl/FmzSXf8M12qKtN4r9"
+        return location
+
+    if studio == "East Delhi":
+        location = "https://maps.app.goo.gl/6qcLECimcCqzSHEa7"
+        return location
+
+    if studio == "Gurgaon":
+        location = "https://maps.app.goo.gl/p7G3kMkHaxGgP4Z98"
+        return location
+
+    if studio == "Indirapuram":
+        location = "https://maps.app.goo.gl/xechLGU3XpZ1QX3J7"
+        return location
+
 
 
 def check_promo_validity(expiry_date):
@@ -147,16 +202,6 @@ def remove_promo_code(name, email, phone, promo_code, filename):
             with open(filename, 'w') as json_file:
                 json.dump(promo_data, json_file, indent=4)
 
-
-##
-
-# Razorpay payment gateway credentials
-# razorpay_key_id = 'rzp_test_9Yy2azW5HeczxN'
-# razorpay_key_secret = 'QhcRWMasciGh2iZUhNe6m786'
-
-# Create a Razorpay client
-# razorpay_client = razorpay.Client(auth=(razorpay_key_id, razorpay_key_secret))
-
 # Your Cc avenue API credentials
 
 
@@ -212,6 +257,7 @@ def increment_receipt_number():
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
 
 
 def send_receipt(receiver_mail, rendered_html):
@@ -299,19 +345,18 @@ def select_dropin():
     phone = request.form['phone']
     email = request.form['email']
     studio = request.form['Studio']
-
-    if studio in ["Noida", "Rajouri Garden", "Pitampura"]:
-        batch_scenario = "twice"
+    print(studio)
 
 
-    elif studio in ["Gurgaon", "South Delhi", "Indirapuram"]:
-        batch_scenario = "heels_once"
 
-    else:
-        batch_scenario = "once"
+    # elif studio in ["Gurgaon", "South Delhi", "Indirapuram"]:
+    #     batch_scenario = "heels_once"
+    #
+    # else:
+    #     batch_scenario = "once"
 
 
-    return render_template('selectdropin.html', dropin_studio=studio, batch_scenario=batch_scenario,
+    return render_template('selectdropin.html', dropin_studio=studio,
                            three_months_validty="true", grid_validity="true")
 
 
@@ -323,9 +368,6 @@ def registration_form():
     return render_template('index.html')
 
 
-#
-# @app.route('/payment_mode',methods=['GET', 'POST'])
-# def payment_method():
 @app.route('/batch', methods=['GET', 'POST'])
 def select_batch():
     global name, phone, email, studio, promo_code_applied, batch_scenario
@@ -356,16 +398,6 @@ def select_batch():
 
         if discount > 0:
             print(discount)
-            # with open("promo_code.json", 'r') as json_file:
-            #     data = json.load(json_file)
-            #     discount = 0
-
-            #     for item in data:
-            #         if isinstance(item, dict) and 'promo_code' in item and item['promo_code'] == promo_code:
-            #             if 'amount' in item:
-            #                 discount = item['amount']
-            #                 print(discount)
-            #             break
 
             return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount,
                                    promo_message=f"Promo Code worth {discount} applied successfully")
@@ -376,11 +408,11 @@ def select_batch():
 
 @app.route('/payment-method', methods=['GET', 'POST'])
 def make_payment():
-    print(request.form['fee'])
+
     if request.form['fee'] == 0 or request.form['fee'] == "":
-        print("Cancelled")
-        return redirect(url_for('select_batch'))
-        flash("Select 1 batch")
+        flash("Select at least one batch.")
+        return render_template(url_for('select_batch'), name=name)
+
     else:
 
         global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date, fee_without_gst
@@ -392,22 +424,6 @@ def make_payment():
         fee = str(round(float(fee_without_gst) * 1.18))
         paid_to = "Pink Grid"
         validity = request.form['validity']
-        # merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + fee + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
-        # encryption = encrypt(merchant_data, workingKey)
-
-        # p_merchant_id = "2538003"
-        # p_order_id = f"order_{order_receipt}"
-        # p_currency = 'INR'
-        # p_amount = fee
-        # p_redirect_url = url_for('payment_successful')
-        # p_cancel_url = url_for('payment_failed')
-        #
-        # merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + p_amount + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
-        # print(merchant_data)
-        # encryption = encrypt(merchant_data, workingKey)
-        # mid = p_merchant_id
-        # xscode = accessCode
-        # enReq = encryption
 
         if validity == "two_months_grid":
             validity = "August, September, Grid 2.0"
@@ -421,106 +437,9 @@ def make_payment():
             batches = batch
             print(batches)
 
-        # Get the selected batches as a list
-
-        #     # Create a new order in Razorpay
-        # order_amount = int(float(fee) * 100)  # Convert fee to the smallest currency unit (in paisa)
-        # order_currency = 'INR'
-        #
-        # order_data = {
-        #         'amount': order_amount,
-        #         'currency': order_currency,
-        #         'receipt': order_receipt,
-        #         'payment_capture': 1,  # Auto-capture the payment
-        #         # Add any other parameters as required
-        #     }
-        #
-        # order_response = razorpay_client.order.create(data=order_data)
-        #
-        # if order_response.get('id'):
-        #     order_id = order_response['id']
-        #
-        #     # Redirect the user to the Razorpay payment page
-        #     return render_template("pay.html", payment=order_response)
-        # else:
-        #     # Failed to create the order
-        #     return render_template('failed.html')
-
-        # html = '''\
-        # <html>
-        # <head>
-        #     <title>Sub-merchant checkout page</title>
-        #     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        # </head>
-        # <body>
-        #     <center>
-        #     <!-- width required mininmum 482px -->
-        #         <iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=$mid&encRequest=$encReq&access_code=$xscode">
-        #         </iframe>
-        #     </center>
-        #
-        #     <script type="text/javascript">
-        #         $(document).ready(function(){
-        #             $('iframe#paymentFrame').load(function() {
-        #                  window.addEventListener('message', function(e) {
-        #                      $("#paymentFrame").css("height",e.data['newHeight']+'px');
-        #                  }, false);
-        #              });
-        #         });
-        #     </script>
-        #   </body>
-        # </html>
-        # '''
-        # fin = Template(html).safe_substitute(mid=p_merchant_id, encReq=encryption, xscode=accessCode)
-        #
-        # return fin
-        #
-        # parametres = {
-        #     "command": "initiateTransaction",
-        #     "merchant_id": p_merchant_id,
-        #     "encRequest": encryption,
-        #     "access_code": xscode
-        #
-        #
-        #
-        #
-        #
-        # }
-        # ccavenue_checkout_url = "https://test.ccavenue.com/transaction/transaction.do"
-        # redirect_url = ccavenue_checkout_url + "?" + urllib.parse.urlencode(parametres)
-        #
-        # # response = requests.get("https://test.ccavenue.com/transaction/transaction.do", params=parametres)
-        # # print(response.text)
-        #
-        # print("Redirecting to CCAvenue checkout:")
-        # print(redirect_url)
-        # return redirect(redirect_url)
 
         return render_template('pay.html')
 
-    # return render_template(
-    #     'payment.html',
-    #     encryption=encryption,
-    #     access_code=accessCode)
-    # #
-    # html = '''\
-    # <html>
-    # <head>
-    # 	<title>Sub-merchant checkout page</title>
-    # 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    # </head>
-    # <body>
-    # <form id="nonseamless" method="post" name="redirect" action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction" >
-    # 		<input type="hidden" id="encRequest" name="encRequest" value=$encReq>
-    # 		<input type="hidden" name="access_code" id="access_code" value=$xscode>
-    # 		<script language='javascript'>document.redirect.submit();</script>
-    # </form>
-    # </body>
-    # </html>
-    # '''
-    # fin = Template(html).safe_substitute(encReq=encryption, xscode=accessCode)
-    #
-    # return fin
 
 workingKey = "868E43E034DB2953A9E18EC401CA3268"
 accessCode = "AVKR14KI19BL44RKLB"
@@ -555,7 +474,13 @@ def ccavenue_login():
     		<input type="hidden" id="encRequest" name="encRequest" value=$encReq>
     		<input type="hidden" name="access_code" id="access_code" value=$xscode>
     		<script language='javascript'>document.redirect.submit();</script>
-    </form>    
+    </form>
+    <div id="gstBreakup">
+        <h2>GST Breakup</h2>
+        <p>GST Percentage: <span id="gstPercentage">{{p_amount/118%}}</span></p>
+        <p>GST Amount: <span id="gstAmount">{{p_amount/118%*18%}}</span></p>
+        <p>Total Amount (Including GST): <span id="totalAmount">{{p_amount}}</span></p>
+    </div>    
     </body>
     </html>
     '''
@@ -567,30 +492,12 @@ def ccavenue_login():
 @app.route('/cash_payment', methods=['GET', 'POST'])
 def cash_payment():
     global wingperson
-    wingperson = ""
-    if studio == "Noida":
-        wingperson = "Priyanshi"
-        location = "https://maps.app.goo.gl/EA75L86kCKT72H6N8"
-    if studio == "Rajouri Garden":
-        wingperson = "Kajal"
-        location = "https://maps.app.goo.gl/RqP29GsxekCRALrU9"
-    if studio == "Pitampura":
-        wingperson = "Rubani"
-        location = "https://maps.app.goo.gl/NMtbTXxBnV5rbBjB9"
-    if studio == "South Delhi":
-        wingperson = "Jhilmil"
-        location = "https://maps.app.goo.gl/FmzSXf8M12qKtN4r9"
-    if studio == "East Delhi":
-        wingperson = "Muskan"
-        location = "https://maps.app.goo.gl/6qcLECimcCqzSHEa7"
-    if studio == "Gurgaon":
-        wingperson = "Jahnvi"
-        location = "https://maps.app.goo.gl/p7G3kMkHaxGgP4Z98"
-    if studio == "Indirapuram":
-        wingperson = "Tarun"
-        location = "https://maps.app.goo.gl/xechLGU3XpZ1QX3J7"
+    wingperson = get_studio_wingperson(studio)
 
-    return render_template('cash.html',studio=studio, fee=fee, wingperson=wingperson, location=location)
+    return render_template('cash.html',studio=studio, fee=fee, wingperson=wingperson, location=get_studio_location(studio=studio))
+
+
+
 
 
 @app.route('/process_cash', methods=['GET', 'POST'])
@@ -656,6 +563,7 @@ def payment_successful():
     sheet.append_row(row)
     print("Succesfully added to sheets")
 
+
     rendered_receipt = render_template("receipt2.html", date=today_date, name=name, batch=batch_str, phone=phone,
                                        validity=validity, email=email, studio=studio, gross_amount=gross_amount,
                                        gst=gst, fee=fee, order_receipt=f"#{str(order_receipt)}",
@@ -664,6 +572,13 @@ def payment_successful():
 
     send_receipt(receiver_mail=email, rendered_html=rendered_receipt)
     return render_template("success.html")
+
+# def render_recipt(date):
+#     return render_template("receipt2.html", date=today_date, name=name, batch=batch_str, phone=phone,
+#                                        validity=validity, email=email, studio=studio, gross_amount=gross_amount,
+#                                        gst=gst, fee=fee, order_receipt=f"#{str(order_receipt)}",
+#                                        mode_of_payment=mode_of_payment, paid_to=paid_to, hashtag_logo=hashtag_logo,
+#                                        watermark=hashtag_watermark, promo_code=promo_code)
 
 
 @app.route('/terms')
