@@ -10,7 +10,6 @@ import json
 import random
 from datetime import datetime, timedelta
 from string import Template
-from celery import Celery
 
 
 
@@ -19,7 +18,6 @@ from celery import Celery
 app = Flask(__name__)
 app.secret_key = '#register_with_hashtag0909'
 
-celery = Celery(app.name, broker='redis://localhost:6379/0')
 
 
 # Google Sheets API credentials
