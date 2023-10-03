@@ -10,6 +10,7 @@ import json
 import random
 from datetime import datetime, timedelta
 from string import Template
+import threading
 
 
 
@@ -363,8 +364,8 @@ def select_dropin():
 
 @app.route('/', methods=['GET', 'POST'])
 def registration_form():
-    return render_template('index.html')
 
+    return render_template('index.html')
 
 @app.route('/batch', methods=['GET', 'POST'])
 def select_batch():
@@ -407,36 +408,32 @@ def select_batch():
 @app.route('/payment-method', methods=['GET', 'POST'])
 def make_payment():
 
-    if request.form['fee'] == 0 or request.form['fee'] == "":
-        flash("Select at least one batch.")
-        return render_template(url_for('select_batch'), name=name)
-
-    else:
-
-        global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date, fee_without_gst
-        order_receipt = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
 
 
-        batches = request.form.getlist('batch[]')
-        fee_without_gst = request.form['fee']
-        fee = str(round(float(fee_without_gst) * 1.18))
-        paid_to = "Pink Grid"
-        validity = request.form['validity']
-
-        if validity == "two_months_grid":
-            validity = "August, September, Grid 2.0"
-        if validity == "three_months":
-            validity = "August, September, December"
-        if validity == "grid":
-            validity = "Grid 2.0"
-        if validity == "Drop In":
-            dropin_date = request.form['dropin_date']
-            batch = request.form['batch']
-            batches = batch
-            print(batches)
+    global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date, fee_without_gst
+    order_receipt = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
 
 
-        return render_template('pay.html')
+    batches = request.form.getlist('batch[]')
+    fee_without_gst = request.form['fee']
+    fee = str(round(float(fee_without_gst) * 1.18))
+    paid_to = "Pink Grid"
+    validity = request.form['validity']
+
+    if validity == "two_months_grid":
+        validity = "August, September, Grid 2.0"
+    if validity == "three_months":
+        validity = "August, September, December"
+    if validity == "grid":
+        validity = "Grid 2.0"
+    if validity == "Drop In":
+        dropin_date = request.form['dropin_date']
+        batch = request.form['batch']
+        batches = batch
+        print(batches)
+
+
+    return render_template('pay.html')
 
 
 workingKey = "868E43E034DB2953A9E18EC401CA3268"
@@ -448,8 +445,8 @@ def ccavenue_login():
     p_order_id = f"order_{order_receipt}"
     p_currency = 'INR'
     p_amount = fee
-    p_redirect_url = url_for('payment_successful')
-    p_cancel_url = url_for('payment_failed')
+    p_redirect_url = "https://register.hashtag.dance/success"
+    p_cancel_url = "https://register.hashtag.dance/failed"
 
 
 
@@ -518,7 +515,7 @@ def process_cash():
         return render_template("cash.html")
 
 
-@app.route('/success', methods=['GET'])
+@app.route('/success', methods=['GET', 'POST'])
 def payment_successful():
     request.form.get('')
     sheet = client.open_by_key(sheet_key).worksheet(sheet_name)
@@ -562,13 +559,17 @@ def payment_successful():
     print("Succesfully added to sheets")
 
 
-    rendered_receipt = render_template("receipt2.html", date=today_date, name=name, batch=batch_str, phone=phone,
-                                       validity=validity, email=email, studio=studio, gross_amount=gross_amount,
-                                       gst=gst, fee=fee, order_receipt=f"#{str(order_receipt)}",
-                                       mode_of_payment=mode_of_payment, paid_to=paid_to, hashtag_logo=hashtag_logo,
-                                       watermark=hashtag_watermark, promo_code=promo_code)
+    def send_receipt_background():
+        rendered_receipt = render_template("receipt2.html", date=today_date, name=name, batch=batch_str, phone=phone,
+                                           validity=validity, email=email, studio=studio, gross_amount=gross_amount,
+                                           gst=gst, fee=fee, order_receipt=f"#{str(order_receipt)}",
+                                           mode_of_payment=mode_of_payment, paid_to=paid_to, hashtag_logo=hashtag_logo,
+                                           watermark=hashtag_watermark, promo_code=promo_code)
 
-    send_receipt(receiver_mail=email, rendered_html=rendered_receipt)
+        send_receipt(receiver_mail=email, rendered_html=rendered_receipt)
+
+    send_receipt_background()
+
     return render_template("success.html")
 
 # def render_recipt(date):
