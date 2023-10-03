@@ -589,7 +589,7 @@ label{
 @media (min-width: 812px) {
 
     .card-3 .card-heading {
-      background: url("../images/hashtag_logo.png") top left/cover no-repeat;
+      background: url("../images/hashtag_logofinal.png") top left/cover no-repeat;
       background-size : cover;
       background-position: left center; /* This will shift the image to the left */
       display: table-cell;
