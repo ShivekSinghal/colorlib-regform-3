@@ -518,7 +518,7 @@ def process_cash():
         return render_template("cash.html")
 
 
-@app.route('/success', methods=['GET', 'POST'])
+@app.route('/success', methods=['GET'])
 def payment_successful():
     request.form.get('')
     sheet = client.open_by_key(sheet_key).worksheet(sheet_name)
