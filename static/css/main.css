@@ -613,11 +613,11 @@ label{
 }}
 @media (max-width: 812px) {
     .card-3 .card-heading {
-      background: url("../images/hashtag_logo.png") top left/cover no-repeat;
+      background: url("../images/hashtag_logofinal.png") top left/cover no-repeat;
       background-position: left center; /* This will shift the image to the left */
       display: table-cell;
       width: 100%; /* Ensure the element takes up the full width */
-      background-size : cover;
+      background-size : contain;
       object-fit: cover;
 
 
@@ -625,6 +625,8 @@ label{
       margin-right : auto;
       background-repeat: no-repeat; /* Prevent the image from repeating */
       border-right-width: 100px;
+
+
 
 
 }}
@@ -643,6 +645,10 @@ label{
 @media (max-width: 767px) {
   .card-3 {
     display: block;
+    background-size : contain;
+    background-position: center top;
+    bottom: 330px;
+    margin-top: 300px;
   }
   .card-3 .card-heading {
     display: block;
