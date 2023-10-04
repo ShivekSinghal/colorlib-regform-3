@@ -116,7 +116,7 @@ button {
 
 .page-wrapper {
   min-height: 100vh;
-  background: url("../images/company-members-2.png");
+  background: url("../images/company-members-4-blur.png");
   backdrop-filter: blur(5px);
   background-size : 100%;
 
@@ -455,10 +455,16 @@ label{
 }
 
 
+}
+
 #feeField {
-    padding-left : 20px;
-    padding-bottom : 15px;
+
     background : rgba(0, 0, 0, 0.5);
+    color : rgba(0, 0, 0, 0.5);
+
+    padding-left: 10px;
+    padding-bottom: 10px;
+
 
 }
 .ml-2 {

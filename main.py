@@ -409,31 +409,35 @@ def select_batch():
 def make_payment():
 
 
-
     global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date, fee_without_gst
     order_receipt = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
 
 
     batches = request.form.getlist('batch[]')
     fee_without_gst = request.form['fee']
-    fee = str(round(float(fee_without_gst) * 1.18))
-    paid_to = "Pink Grid"
-    validity = request.form['validity']
+    print(fee_without_gst)
+    if fee_without_gst == "":
+        flash(category=str, message="Please select atleast 1 batch")
+        return redirect("/")
+    else:
+        fee = str(round(float(fee_without_gst) * 1.18))
+        paid_to = "Pink Grid"
+        validity = request.form['validity']
 
-    if validity == "two_months_grid":
-        validity = "August, September, Grid 2.0"
-    if validity == "three_months":
-        validity = "August, September, December"
-    if validity == "grid":
-        validity = "Grid 2.0"
-    if validity == "Drop In":
-        dropin_date = request.form['dropin_date']
-        batch = request.form['batch']
-        batches = batch
-        print(batches)
+        if validity == "two_months_grid":
+            validity = "August, September, Grid 2.0"
+        if validity == "three_months":
+            validity = "August, September, December"
+        if validity == "grid":
+            validity = "Grid 2.0"
+        if validity == "Drop In":
+            dropin_date = request.form['dropin_date']
+            batch = request.form['batch']
+            batches = batch
+            print(batches)
 
 
-    return render_template('pay.html')
+        return render_template('pay.html')
 
 
 workingKey = "868E43E034DB2953A9E18EC401CA3268"

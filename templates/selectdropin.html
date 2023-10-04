@@ -124,7 +124,6 @@
                         </div>
 
                         <div class="container">
-                            {% if batch_scenario == "twice" %}
                                 <div class="row">
                                     <h4 style="color : #ffffff; padding : 0px 0px 20px 15px;">Batch :</h4>
 
@@ -166,7 +165,7 @@
                                                 <label class="checkbox-inline">
                                                     <input type="radio" name="batch" value="Hip Hop (twice a week)" onchange="updateFee()">
                                                 </label>
-                                                <span class="ml-2">Hip Hop (twice a week)</span>
+                                                <span class="ml-2">Hip Hop</span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -174,116 +173,16 @@
                                                 <label class="checkbox-inline">
                                                     <input type="radio" name="batch" value="Heels (twice a week)" onchange="updateFee()">
                                                 </label>
-                                                <span class="ml-2">Heels (twice a week)</span>
+                                                <span class="ml-2">Heels</span>
                                             </div>
                                         </div>
-                                {% endif %}
-                                    {% if batch_scenario == "once" %}
-                                    <div class="row">
-                                        <h4 style="color : #ffffff; padding-bottom : 20px;">Batch :</h4>
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input class="text-white" type="radio" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()" aria-selected="true">
-                                                </label>
-                                                <span class="ml-2">Jazz 1 (Weekend)</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Ballet" onchange="updateFee()">
-                                                </label>
-                                                <span class="ml-2">Ballet</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Modern" onchange="updateFee()">
-                                                </label>
-                                                <span class="ml-2">Modern</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Hip Hop (once a week)" onchange="updateFee()">
-                                                </label>
-                                                <span class="ml-2">Hip Hop (once a week)</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Heels (once a week)" onchange="updateFee()">
-                                                </label>
-                                                <span class="ml-2">Heels (once a week)</span>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                </div>
-                                    {% if batch_scenario == "heels_once" %}
-                                    <div class="row">
-                                        <h4 style="color : #ffffff; padding-bottom : 20px;">Batch :</h4>
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input class="text-white" type="radio" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()">
-                                                </label>
-                                                <span class="ml-2">Jazz 1 (Weekend)</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input class="text-white" type="radio" name="batch" value="Jazz 1 (Weekdays)" onchange="updateFee()">
-                                                </label>
-                                                <span class="ml-2">Jazz 1 (Weekdays)</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Ballet" onchange="updateFee()">
-                                                </label>
-                                                <span class="ml-2">Ballet</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Modern" onchange="updateFee()">
-                                                </label>
-                                                <span class="ml-2">Modern</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Hip Hop (twice a week)" onchange="updateFee()">
-                                                </label>
-                                                <span id="" class="ml-2">Hip Hop (twice a week)</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Heels (once a week)" onchange="updateFee()">
-                                                </label>
-                                                <span class="ml-2">Heels (once a week)</span>
-                                            </div>
-                                        </div>
-                                        {% endif %}
 
 
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
                                                 <label class="fee-label" for="fee">Fee: </label>
-                                                <input class="input--style-3" type="text"  id="feeField" name="fee"  readonly><br><br>
+                                                <input class="input--style-3" type="text"  id="feeField" name="fee"  readonly
+                                                style="padding-left: 7px; padding-bottom: 11px;"><br><br>
 
 
                                             </div>
