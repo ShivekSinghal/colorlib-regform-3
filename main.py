@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify, flash
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify, flash, session
 import os
 from oauth2client.service_account import ServiceAccountCredentials
 import gspread
@@ -263,7 +263,7 @@ def send_receipt(receiver_mail, rendered_html):
     my_email = "singhalshivek24@gmail.com"
     password = 'lzjkbgcrngzalkhc'
     smtp_server = "smtp.gmail.com"
-    email_subject = "Registration Receipt Sep'23"
+    email_subject = "Registration Receipt Grid 2.0 '23"
     smtp_port = 587
 
     inlined_html = transform(rendered_html)
@@ -340,10 +340,10 @@ def select_dropin():
     global name, phone, email, studio
     three_months_validty = os.environ.get('THREE_MONTHS_VALIDITY')
     grid_validity = os.environ.get('GRID_VALIDITY')
-    name = request.form['name']
-    phone = request.form['phone']
-    email = request.form['email']
-    studio = request.form['Studio']
+    session['name'] = request.form['name']
+    session['phone'] = request.form['phone']
+    session['email'] = request.form['email']
+    session['studio'] = request.form['Studio']
     print(studio)
 
 
@@ -371,18 +371,22 @@ def registration_form():
 def select_batch():
     global name, phone, email, studio, promo_code_applied, batch_scenario
 
-    name = request.form['name']
-    phone = request.form['phone']
-    email = request.form['email']
-    studio = request.form['Studio']
-    promo_code_applied = request.form['promo']
+    session['name'] = request.form['name']
+    session['phone'] = request.form['phone']
+    session['email'] = request.form['email']
+    session['studio'] = request.form['Studio']
+    session['promo_code_applied'] = request.form['promo']
 
+    name = session.get('name')
+    phone = session.get('phone')
+    email = session.get('email')
+    promo_code_applied = session.get('promo_code_applied')
     batch_scenario = ""
-    if studio in ["Noida", "Rajouri Garden", "Pitampura"]:
+    if session.get('studio') in ["Noida", "Rajouri Garden", "Pitampura"]:
         batch_scenario = "twice"
 
 
-    elif studio in ["Gurgaon", "South Delhi", "Indirapuram"]:
+    elif session.get('studio') in ["Gurgaon", "South Delhi", "Indirapuram"]:
         batch_scenario = "heels_once"
 
     else:
@@ -410,20 +414,19 @@ def make_payment():
 
 
     global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date, fee_without_gst
-    order_receipt = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
+    session['order_receipt'] = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
 
 
-    batches = request.form.getlist('batch[]')
-    fee_without_gst = request.form['fee']
-    print(fee_without_gst)
-    if fee_without_gst == "":
+    session['batches'] = request.form.getlist('batch[]')
+    session['fee_without_gst'] = request.form['fee']
+    if session.get('fee_without_gst') == "":
         flash(category=str, message="Please select atleast 1 batch")
         return redirect("/")
     else:
-        fee = str(round(float(fee_without_gst) * 1.18))
+        session['fee'] = str(round(float(session.get('fee_without_gst')) * 1.18))
         paid_to = "Pink Grid"
-        validity = request.form['validity']
-
+        session['validity'] = request.form['validity']
+        validity = session.get('validity')
         if validity == "two_months_grid":
             validity = "August, September, Grid 2.0"
         if validity == "three_months":
@@ -431,11 +434,10 @@ def make_payment():
         if validity == "grid":
             validity = "Grid 2.0"
         if validity == "Drop In":
-            dropin_date = request.form['dropin_date']
-            batch = request.form['batch']
+            session['dropin_date'] = request.form['dropin_date']
+            session['batch'] = request.form['batch']
             batches = batch
             print(batches)
-
 
         return render_template('pay.html')
 
@@ -446,16 +448,20 @@ accessCode = "AVKR14KI19BL44RKLB"
 @app.route('/payment', methods=['GET', 'POST'])
 def ccavenue_login():
     p_merchant_id = "2538003"
-    p_order_id = f"order_{order_receipt}"
+    p_order_id = f"order_{session.get('order_receipt')}"
     p_currency = 'INR'
-    p_amount = fee
+    p_amount = session.get('fee')
     p_redirect_url = "https://register.hashtag.dance/success"
     p_cancel_url = "https://register.hashtag.dance/failed"
+    p_billing_name = session.get('name')
+    p_phone = session.get('phone')
+    p_email = session.get('email')
 
 
 
 
-    merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + p_amount + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&'
+
+    merchant_data = 'merchant_id=' + p_merchant_id + '&' + 'order_id=' + p_order_id + '&' + "currency=" + p_currency + '&' + 'amount=' + p_amount + '&' + 'redirect_url=' + p_redirect_url + '&' + 'cancel_url=' + p_cancel_url + '&' + 'billing_name=' + p_billing_name + '&' + 'billing_tel=' + p_phone + '&' + 'billing_email=' + p_email + '&'
 
     encryption = encrypt(merchant_data, workingKey)
     mid= p_merchant_id
@@ -490,10 +496,12 @@ def ccavenue_login():
 
 @app.route('/cash_payment', methods=['GET', 'POST'])
 def cash_payment():
-    global wingperson
-    wingperson = get_studio_wingperson(studio)
+    studio = session.get('studio')
 
-    return render_template('cash.html',studio=studio, fee=fee, wingperson=wingperson, location=get_studio_location(studio=studio))
+    session['wingperson'] = get_studio_wingperson(studio)
+    fee = session.get('fee')
+
+    return render_template('cash.html',studio=studio, fee=fee, wingperson=session.get('wingperson'), location=get_studio_location(studio=studio))
 
 
 
@@ -504,7 +512,7 @@ def process_cash():
     if request.method == "POST":
         global wingperson_name
         # wingperson_name = request.form.get('wingperson_name')
-        wingperson_name = wingperson
+        wingperson_name = session.get('wingperson')
         password = request.form.get('password')
         mode_of_payment = "Cash"
 
@@ -523,8 +531,18 @@ def process_cash():
 def payment_successful():
     request.form.get('')
     sheet = client.open_by_key(sheet_key).worksheet(sheet_name)
-    batch_str = ', '.join(batches)  # Join the batches list with a comma separator
+    batch_str = ', '.join(session.get('batches'))  # Join the batches list with a comma separator
     today_date = datetime.today().strftime('%d-%b-%Y')
+    name = session.get('name')
+    phone = session.get('phone')
+    email = session.get('email')
+    order_receipt = session.get('order_receipt')
+    fee_without_gst = session.get('fee_without_gst')
+    validity = session.get('validity')
+    fee = session.get('fee')
+    studio = session.get('studio')
+    mode_of_payment = session.get('mode_of_payment')
+    promo_code = session.get('promo_code_applied')
     source = request.args.get('source')
     if source == "Cash":
         mode_of_payment = "Cash"
@@ -537,10 +555,15 @@ def payment_successful():
     if validity == "Drop In":
         batch_str = batches
         promo_data = load_promo_data("promo_code.json")
+        promo_code = create_promo_json(name, email, phone, fee_without_gst, session.get('dropin_date'),
+                                       "promo_code.json")
+
+    if validity == 'grid':
+        validity = "Grid 2.0"
+
 
         # if promo_data is not None:
 
-        promo_code = create_promo_json(name, email, phone, fee_without_gst, dropin_date, "promo_code.json")
 
 
     else:
