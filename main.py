@@ -337,14 +337,13 @@ def registration_form_dropin():
 
 @app.route('/dropinbatch', methods=['GET', 'POST'])
 def select_dropin():
-    global name, phone, email, studio
     three_months_validty = os.environ.get('THREE_MONTHS_VALIDITY')
     grid_validity = os.environ.get('GRID_VALIDITY')
     session['name'] = request.form['name']
     session['phone'] = request.form['phone']
     session['email'] = request.form['email']
     session['studio'] = request.form['Studio']
-    print(studio)
+    studio = session.get('studio')
 
 
 
@@ -436,8 +435,7 @@ def make_payment():
         if validity == "Drop In":
             session['dropin_date'] = request.form['dropin_date']
             session['batch'] = request.form['batch']
-            batches = batch
-            print(batches)
+            batches = session.get('batch')
 
         return render_template('pay.html')
 
@@ -552,11 +550,6 @@ def payment_successful():
         mode_of_payment = "Bank Transfer"
         paid_to = "Pink Grid"
 
-    if validity == "Drop In":
-        batch_str = batches
-        promo_data = load_promo_data("promo_code.json")
-        promo_code = create_promo_json(name, email, phone, fee_without_gst, session.get('dropin_date'),
-                                       "promo_code.json")
 
     if validity == 'grid':
         validity = "Grid 2.0"
@@ -565,9 +558,14 @@ def payment_successful():
         # if promo_data is not None:
 
 
+    elif validity == "Drop In":
+        batch_str = batches
+        promo_data = load_promo_data("promo_code.json")
+        promo_code = create_promo_json(name, email, phone, fee_without_gst, session.get('dropin_date'),
+                                       "promo_code.json")
 
     else:
-        remove_promo_code(name, email, phone, promo_code_applied, filename="promo_code.json")
+        remove_promo_code(name, email, phone, promo_code, filename="promo_code.json")
 
         promo_code = "N/A"
 
