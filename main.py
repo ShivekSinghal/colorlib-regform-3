@@ -381,11 +381,11 @@ def select_batch():
     email = session.get('email')
     promo_code_applied = session.get('promo_code_applied')
     batch_scenario = ""
-    if session.get('studio') in ["Noida", "Rajouri Garden", "Pitampura"]:
+    if session.get('studio') in ["Noida", "Rajouri Garden", "Pitampura", "Gurgaon", "South Delhi"]:
         batch_scenario = "twice"
 
 
-    elif session.get('studio') in ["Gurgaon", "South Delhi", "Indirapuram"]:
+    elif session.get('studio') in ["Indirapuram"]:
         batch_scenario = "heels_once"
 
     else:
