@@ -260,8 +260,8 @@ from email.mime.text import MIMEText
 
 
 def send_receipt(receiver_mail, rendered_html):
-    my_email = "singhalshivek24@gmail.com"
-    password = 'lzjkbgcrngzalkhc'
+    my_email = "universal@hashtag.dance"
+    password = 'nnmzpvnfimvoqgjk'
     smtp_server = "smtp.gmail.com"
     email_subject = "Registration Receipt Grid 2.0 '23"
     smtp_port = 587
@@ -386,7 +386,7 @@ def select_batch():
 
 
     elif session.get('studio') in ["Indirapuram"]:
-        batch_scenario = "heels_once"
+        batch_scenario = "no_modern"
 
     else:
         batch_scenario = "once"
