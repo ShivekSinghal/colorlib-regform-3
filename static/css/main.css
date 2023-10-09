@@ -31,6 +31,10 @@
 padding : 10px 10px 10px 10px;
 
 }
+.custom-checkbox {
+    width: auto; /* Adjust the margin as needed */
+}
+
 @media (max-width: 767px) {
   .col-2 {
     width: 100%;
@@ -468,7 +472,6 @@ label{
 
 }
 .ml-2 {
-    padding-bottom : 10px;
     color : #FFFFFF;
 }
 .partition {
