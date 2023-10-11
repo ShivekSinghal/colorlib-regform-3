@@ -427,7 +427,7 @@ def make_payment():
         session['validity'] = request.form['validity']
         validity = session.get('validity')
         if validity == "two_months_grid":
-            validity = "August, September, Grid 2.0"
+            session['validity'] = "Grid, December, January"
         if validity == "three_months":
             validity = "August, September, December"
         if validity == "grid":
