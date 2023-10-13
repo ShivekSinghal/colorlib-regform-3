@@ -38,5 +38,13 @@
         "email": "singhalshivek24@gmail.com",
         "phone": "8527805203",
         "amount": "542"
+    },
+    {
+        "promo_code": "^(^4*59E",
+        "expiry": "2023-10-12 23:59:59",
+        "name": "Priyanshi",
+        "email": "singhalshivek24@gmail.com",
+        "phone": "8527805203",
+        "amount": "542"
     }
 ]
