@@ -43,21 +43,17 @@
       var no_of_batches = selectedBatches.length;
 
       if (no_of_batches === 0) {
-        alert("Please select at least one batch.");
-        return false; // Prevent form submission
+        return alert("Please select at least one batch.");
       }
 
       if (feeField.value === "") {
-        alert("Please select at least one batch.");
-        return false; // Prevent form submission
+        return ("Please select at least one batch.");
       }
 
       if (validity === "") {
-        alert("Please select validity.");
-        return false; // Prevent form submission
+        return alert("Please select validity.");
       }
 
-      return true; // Form submission will proceed if all validations pass
     }
     {% if promo_message %}
     // Display an alert box with the promo message
@@ -222,6 +218,25 @@
 
       }
     }
+    function enableBatchCheckboxes() {
+      var validitySelect = document.getElementsByName("validity")[0];
+      var batchCheckboxes = document.getElementsByName("batch[]");
+
+      validitySelect.addEventListener("change", function() {
+        if (validitySelect.value !== "") {
+          for (var i = 0; i < batchCheckboxes.length; i++) {
+            batchCheckboxes[i].disabled = false;
+          }
+        } else {
+          for (var i = 0; i < batchCheckboxes.length; i++) {
+            batchCheckboxes[i].disabled = true;
+            batchCheckboxes[i].checked = false;
+          }
+    }
+
+  });
+}
+
     function doGet() {
       return HtmlService.createTemplateFromFile('index').evaluate();
       }
@@ -247,7 +262,7 @@
                     <form onsubmit="return validateForm()" method="POST" action="{{url_for('make_payment')}}">
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
-                                <select class="custom-select" name="validity"  required>
+                                <select class="custom-select" name="validity" onchange="updateFee()" required>
                                     <option disabled="disabled" selected="selected" value="">Validity</option>
                                     <option  value="two_months_grid">Grid, December, January</option>
                                     <option  value="grid">Grid</option>
@@ -273,7 +288,7 @@
 <!--                                    <h4 style="color : #ffffff; padding : 0px 0px 20px 15px;">Batch :</h4>-->
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center" >
-                                                <input class="custom-checkbox" type="checkbox" id="jazzcheckbox" name="batch[]" value="Jazz" aria-required="true" onchange="updateFee()">
+                                                <input class="custom-checkbox" type="checkbox" checked="checked" id="jazzcheckbox" name="batch[]" value="Jazz" aria-required="true"  onchange="updateFee()">
 
                                                 <label class="checkbox-inline" for="jazzcheckbox">
                                                 </label>
@@ -341,7 +356,7 @@
 
 
                         <div class="p-t-10">
-                            <button class="btn btn--pill btn--hotpink btn--hotpink:hover" type="submit" style="margin-left: 30px;">Next</button>
+                            <button class="btn btn--pill btn--hotpink btn--hotpink:hover" type="submit" style="margin-left: 30px;" onclick="validateForm()" >Next</button>
                         </div>
 
 

@@ -412,16 +412,17 @@ def select_batch():
 def make_payment():
 
 
-    global order_response, batches, fee, order_receipt, paid_to, validity, p_order_id, dropin_date, fee_without_gst
-    session['order_receipt'] = get_current_receipt_number()  # Replace with your own logic to generate a unique order receipt ID
+      # Replace with your own logic to generate a unique order receipt ID
 
 
-    session['batches'] = request.form.getlist('batch[]')
-    session['fee_without_gst'] = request.form['fee']
-    if session.get('fee_without_gst') == "":
+
+    if request.form['fee'] == "":
         flash(category=str, message="Please select atleast 1 batch")
         return redirect("/")
     else:
+        session['order_receipt'] = get_current_receipt_number()
+        session['batches'] = request.form.getlist('batch[]')
+        session['fee_without_gst'] = request.form['fee']
         session['fee'] = str(round(float(session.get('fee_without_gst')) * 1.18))
         paid_to = "Pink Grid"
         session['validity'] = request.form['validity']
@@ -559,7 +560,7 @@ def payment_successful():
 
 
     elif validity == "Drop In":
-        batch_str = batches
+        batch_str = session.get('batches')
         promo_data = load_promo_data("promo_code.json")
         promo_code = create_promo_json(name, email, phone, fee_without_gst, session.get('dropin_date'),
                                        "promo_code.json")
