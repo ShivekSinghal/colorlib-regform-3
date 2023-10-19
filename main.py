@@ -574,6 +574,8 @@ def payment_successful():
         row = [today_date, name, phone, email, "#" + order_receipt, validity, batch_str, fee, studio,
                mode_of_payment, paid_to, promo_code_created]
     else:
+        promo_code_created = ""
+
         row = [today_date, name, phone, email, "#" + order_receipt, validity, batch_str, fee, studio,
                mode_of_payment, paid_to, promo_code_applied]
 
