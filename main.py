@@ -29,7 +29,7 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json
 client = gspread.authorize(credentials)
 
 os.environ['SHEET_KEY'] = '1cJdiWjKzOMK6kVkPWBfhBVGTy_bsxDBwDbwlagkQfY4'
-os.environ['SHEET_NAME'] = 'Sheet1'
+os.environ['SHEET_NAME'] = 'Registrations'
 os.environ['WORKING_KEY'] = "868E43E034DB2953A9E18EC401CA3268"
 os.environ['ACCESS_CODE'] = "AVKR14KI19BL44RKLB"
 os.environ['THREE_MONTHS_VALIDITY'] = "false"
@@ -165,6 +165,7 @@ def create_promo_json(name, email, phone, amount, dropin_date, filename):
 def apply_promo_code(name, email, phone, promo_code, filename):
     try:
         promo_data = load_promo_data(filename)
+        amount = 0
 
         for promo_entry in promo_data:
             if (
@@ -175,14 +176,15 @@ def apply_promo_code(name, email, phone, promo_code, filename):
                     and check_promo_validity(datetime.strptime(promo_entry["expiry"], "%Y-%m-%d %H:%M:%S"))
             ):
                 print("applied")
-                return promo_entry.get('amount')
-            else:
-                return 0
-
-        return 0  # No matching or valid promo code found
-
+                amount = promo_entry.get('amount')
+                break
+        return amount
     except (FileNotFoundError, json.JSONDecodeError, KeyError):
         return False  # Handle exceptions gracefully
+
+
+    return 0  # No matching or valid promo code found
+
 
 
 def remove_promo_code(name, email, phone, promo_code, filename):
@@ -436,7 +438,6 @@ def make_payment():
         if validity == "Drop In":
             session['dropin_date'] = request.form['dropin_date']
             session['batch'] = request.form['batch']
-            batches = session.get('batch')
 
         return render_template('pay.html')
 
@@ -541,7 +542,7 @@ def payment_successful():
     fee = session.get('fee')
     studio = session.get('studio')
     mode_of_payment = session.get('mode_of_payment')
-    promo_code = session.get('promo_code_applied')
+    promo_code_applied = session.get('promo_code_applied')
     source = request.args.get('source')
     if source == "Cash":
         mode_of_payment = "Cash"
@@ -560,20 +561,22 @@ def payment_successful():
 
 
     elif validity == "Drop In":
-        batch_str = session.get('batches')
-        promo_data = load_promo_data("promo_code.json")
-        promo_code = create_promo_json(name, email, phone, fee_without_gst, session.get('dropin_date'),
+        batch_str = session.get('batch')
+        promo_code_created = create_promo_json(name, email, phone, fee_without_gst, session.get('dropin_date'),
                                        "promo_code.json")
 
-    else:
-        remove_promo_code(name, email, phone, promo_code, filename="promo_code.json")
+    if promo_code_applied:
+        remove_promo_code(name, email, phone, promo_code_applied, filename="promo_code.json")
 
-        promo_code = "N/A"
-
+    print(batch_str)
     print(source)
+    if validity == "Drop In":
+        row = [today_date, name, phone, email, "#" + order_receipt, validity, batch_str, fee, studio,
+               mode_of_payment, paid_to, promo_code_created]
+    else:
+        row = [today_date, name, phone, email, "#" + order_receipt, validity, batch_str, fee, studio,
+               mode_of_payment, paid_to, promo_code_applied]
 
-    row = [today_date, name, phone, email, "#" + order_receipt, validity, batch_str, fee, studio,
-           mode_of_payment, paid_to, promo_code]
     gross_amount = round(float(fee) / 1.18, 2)
     gst = round(gross_amount * 0.18, 2)
 
@@ -587,10 +590,10 @@ def payment_successful():
 
     def send_receipt_background():
         rendered_receipt = render_template("receipt2.html", date=today_date, name=name, batch=batch_str, phone=phone,
-                                           validity=validity, email=email, studio=studio, gross_amount=gross_amount,
+                                           validity='Septmber, October, Grid', email=email, studio=studio, gross_amount=gross_amount,
                                            gst=gst, fee=fee, order_receipt=f"#{str(order_receipt)}",
-                                           mode_of_payment=mode_of_payment, paid_to=paid_to, hashtag_logo=hashtag_logo,
-                                           watermark=hashtag_watermark, promo_code=promo_code)
+                                           mode_of_payment="Bank Transfer", paid_to="Pink Grid", hashtag_logo=hashtag_logo,
+                                           watermark=hashtag_watermark, promo_code=promo_code_created)
 
         send_receipt(receiver_mail=email, rendered_html=rendered_receipt)
 

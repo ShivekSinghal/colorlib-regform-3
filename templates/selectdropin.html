@@ -36,6 +36,7 @@
         // Define the fees dictionary
         var feesDictionary = {
             "Jazz 1 (Weekend)": 1076,
+            "Hip Hop (Weekend)": 1076,
             "Jazz 1 (Weekdays)" : 542,
             "Ballet" : 542,
             "Modern" : 542,
@@ -43,6 +44,7 @@
             "Hip Hop (twice a week)" : 542,
             "Heels (once a week)" : 542,
             "Heels (twice a week)" : 542,
+
             // Add other batches and their fees here
         };
 
@@ -88,8 +90,6 @@
     }
 
 
-
-
   </script>
 
 </html>
@@ -126,35 +126,35 @@
                         <div class="container">
                                 <div class="row">
                                     <h4 style="color : #ffffff; padding : 0px 0px 20px 15px;">Batch :</h4>
-
+                                        {% if dropin_studio in ['Noida', 'Rajouri Garden', 'Pitampura'] %}
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input class="text-white" type="radio" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="Jazz1_weekend">
+                                                    <input class="text-white" type="radio" id="Jazz1_weekend" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Jazz 1 (Weekend)</span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input class="text-white" type="radio" name="batch" value="Jazz 1 (Weekdays)" onchange="updateFee()" aria-selected="true">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="Jazz1_weekday">
+                                                    <input class="text-white" type="radio" id="Jazz1_weekday" name="batch" value="Jazz 1 (Weekdays)" onchange="updateFee()" aria-selected="true">
                                                 </label>
                                                 <span class="ml-2">Jazz 1 (Weekdays)</span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Ballet" onchange="updateFee()">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="ballet">
+                                                    <input type="radio" name="batch" id="ballet" value="Ballet" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Ballet</span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Modern" onchange="updateFee()">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="modern">
+                                                    <input type="radio" name="batch" id="modern" value="Modern" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Modern</span>
                                             </div>
@@ -162,20 +162,150 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Hip Hop (twice a week)" onchange="updateFee()">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="hiphop">
+                                                    <input type="radio" name="batch" id="hiphop" value="Hip Hop (twice a week)" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Hip Hop</span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center">
-                                                <label class="checkbox-inline">
-                                                    <input type="radio" name="batch" value="Heels (twice a week)" onchange="updateFee()">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="heels">
+                                                    <input type="radio" name="batch" id="heels" value="Heels (twice a week)" onchange="updateFee()">
                                                 </label>
                                                 <span class="ml-2">Heels</span>
                                             </div>
                                         </div>
+                                    {% endif %}
+
+                                    {% if dropin_studio in ['Gurgaon'] %}
+
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="Jazz1_weekday">
+                                                    <input class="text-white" type="radio" id="Jazz1_weekday" name="batch" value="Jazz 1 (Weekdays)" onchange="updateFee()" aria-selected="true">
+                                                </label>
+                                                <span class="ml-2">Jazz 1 (Weekdays)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="ballet">
+                                                    <input type="radio" name="batch" id="ballet" value="Ballet" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Ballet</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="modern">
+                                                    <input type="radio" name="batch" id="modern" value="Modern" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Modern</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="hiphop">
+                                                    <input type="radio" name="batch" id="hiphop" value="Hip Hop (Weekend)" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Hip Hop (Weekend)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="heels">
+                                                    <input type="radio" name="batch" id="heels" value="Heels (twice a week)" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Heels</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if dropin_studio in ['South Delhi', 'East Delhi'] %}
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="Jazz1_weekend">
+                                                    <input class="text-white" type="radio" id="Jazz1_weekend" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Jazz 1 (Weekend)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="ballet">
+                                                    <input type="radio" name="batch" id="ballet" value="Ballet" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Ballet</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="modern">
+                                                    <input type="radio" name="batch" id="modern" value="Modern" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Modern</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="hiphop">
+                                                    <input type="radio" name="batch" id="hiphop" value="Hip Hop (Weekend)" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Hip Hop (Weekend)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="heels">
+                                                    <input type="radio" name="batch" id="heels" value="Heels (twice a week)" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Heels</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if dropin_studio in ['Indirapuram'] %}
+
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="Jazz1_weekday">
+                                                    <input class="text-white" type="radio" id="Jazz1_weekday" name="batch" value="Jazz 1 (Weekdays)" onchange="updateFee()" aria-selected="true">
+                                                </label>
+                                                <span class="ml-2">Jazz 1 (Weekdays)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="ballet">
+                                                    <input type="radio" name="batch" id="ballet" value="Ballet" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Ballet</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="hiphop">
+                                                    <input type="radio" name="batch" id="hiphop" value="Hip Hop (twice a week)" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Hip Hop</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label style="margin-bottom: 0;" class="checkbox-inline" for="heels">
+                                                    <input type="radio" name="batch" id="heels" value="Heels (twice a week)" onchange="updateFee()">
+                                                </label>
+                                                <span class="ml-2">Heels</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+
+
 
 
                                         <div class="col-md-12">
