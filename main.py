@@ -277,7 +277,7 @@ def send_receipt(receiver_mail, rendered_html):
 
     body = MIMEText(inlined_html, "html")
     msg.attach(body)
-    with open('./static/images/Hashtag_logo.png', 'rb') as image_file:
+    with open('./static/images/hashtag_logofinal.webp', 'rb') as image_file:
         image = MIMEImage(image_file.read())
         image.add_header('Content-ID', '<logo_image>')
         msg.attach(image)
@@ -599,7 +599,12 @@ def payment_successful():
 
         send_receipt(receiver_mail=email, rendered_html=rendered_receipt)
 
+    # thread = threading.Thread(target=send_receipt_background)
+    # thread.start()
+    print("reciptrendered")
     send_receipt_background()
+    print("recipt sent")
+
 
     return render_template("success.html")
 
@@ -622,5 +627,5 @@ def payment_failed():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=4900)
+    app.run(debug=True, port=4915)
 
