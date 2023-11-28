@@ -269,6 +269,8 @@ def send_receipt(receiver_mail, rendered_html):
     smtp_port = 587
 
     inlined_html = transform(rendered_html)
+    print(inlined_html)
+    print("done1")
 
     msg = MIMEMultipart()
     msg["From"] = my_email
@@ -277,6 +279,7 @@ def send_receipt(receiver_mail, rendered_html):
 
     body = MIMEText(inlined_html, "html")
     msg.attach(body)
+    print("done2")
     with open('./static/images/hashtag_logofinal.webp', 'rb') as image_file:
         image = MIMEImage(image_file.read())
         image.add_header('Content-ID', '<logo_image>')
@@ -304,10 +307,13 @@ def send_receipt(receiver_mail, rendered_html):
         image_watermark.add_header('Content-ID', '<watermark>')
         msg.attach(image_watermark)
 
+    print("images rendered")
+
     with smtplib.SMTP(smtp_server, smtp_port) as connection:
         connection.starttls()
         connection.login(my_email, password)
         connection.send_message(msg)
+    print("email sent")
 
 
 def image_to_base64(image_path):
@@ -597,11 +603,12 @@ def payment_successful():
                                            mode_of_payment="Bank Transfer", paid_to="Pink Grid", hashtag_logo=hashtag_logo,
                                            watermark=hashtag_watermark, promo_code=promo_code_created)
 
+        print("reciptrendered")
+
         send_receipt(receiver_mail=email, rendered_html=rendered_receipt)
 
     # thread = threading.Thread(target=send_receipt_background)
     # thread.start()
-    print("reciptrendered")
     send_receipt_background()
     print("recipt sent")
 

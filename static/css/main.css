@@ -616,7 +616,7 @@ label{
 }}
 @media (max-width: 812px) {
     .card-3 .card-heading {
-      background: url("../images/hashtag_logofinal.png") top left/cover no-repeat;
+      background: url("../images/hashtag_logofinal.webp") top left/cover no-repeat;
       background-position: left center; /* This will shift the image to the left */
       display: table-cell;
       width: 100%; /* Ensure the element takes up the full width */
