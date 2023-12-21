@@ -32,7 +32,6 @@
     function updateFee() {
         var feeField = document.getElementById("feeField");
         var selectedBatch = document.querySelector('input[name="batch"]:checked').value;
-        addToLog("this workedddddddd")
 
         // Define the fees dictionary
         var feesDictionary = {
@@ -89,12 +88,6 @@
 
       return true; // Form submission will proceed if all validations pass
     }
-    function addToLog(message) {
-        const logContainer = document.getElementById('classSchedule');
-        const logMessage = document.createElement('p');
-        logMessage.textContent = message;
-        logContainer.appendChild(logMessage);
-    }
 
 
 
@@ -144,6 +137,20 @@
                                         <div id="classSchedule">
 
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <label class="fee-label" for="fee">Fee:</label>
+                                                <input id="feeField" class="input--style-3" type="text"  id="feeField" name="fee" style="max-width: 100%; box-sizing: border-box;" readonly required
+                                                 ><br><br>
+
+
+                                            </div>
+                                        </div>
+                                        <div style="color:#fff; font-size:10px;">
+                                            <p>* We levy 18% GST as per Goverment guidelines</p>
+                                        </div>
+
+
 
 
 
@@ -172,130 +179,265 @@
 
     function loadClasses() {
 
-        let selectedDate = new Date(document.getElementById('calendar').value);
-        let dayOfWeek = selectedDate.getDay();
-        addToLog("yessssssssss")
-        // Append the h1 element to the body (or any other desired location)
+        const selectedDate = new Date(document.getElementById('calendar').value);
+        const dayOfWeek = selectedDate.getDay();
 
 
 
         const classSelection = document.getElementById('classSchedule');
+        const studio = "{{dropin_studio}}"
 
+        if (studio === 'ED'){
+            if (dayOfWeek === 0) { // Sunday
+                classSelection.innerHTML = `
 
-        if (dayOfWeek === 0) { // Sunday
-            classSelection.innerHTML = `
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
 
-                    <div class="col-md-12">
-                        <div class="form-group d-flex align-items-center">
-
-                            <input class="text-white" type="radio" id="Jazz1_weekend1" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()">
-                            <label style="margin-bottom: 0;" class="checkbox-inline" for="Jazz1_weekend1"></label>
-                            <span class="ml-2">Jazz 1 (Weekend), 11:30am-2:00pm </span>
+                                <input class="text-white" type="radio" id="Jazz1_weekend1" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="Jazz1_weekend1"></label>
+                                <span class="ml-2">Jazz 1 (Weekend), 11:30am-2:00pm </span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-md-12">
-                        <div class="form-group d-flex align-items-center">
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
 
-                            <input type="radio" name="batch" id="heels3" value="Heels (twice a week)" onchange="updateFee()">
-                            <label style="margin-bottom: 0;" class="checkbox-inline" for="heels3"></label>
-                            <span class="ml-2">Heels, 2:00pm-3:15pm</span>
+                                <input type="radio" name="batch" id="heels3" value="Heels (twice a week)" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="heels3"></label>
+                                <span class="ml-2">Heels, 2:00pm-3:15pm</span>
+                            </div>
                         </div>
-                    </div>
 
 
 
 
-                    <div class="col-md-12">
-                        <div class="form-group d-flex align-items-center">
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
 
-                            <input type="radio" name="batch" id="hiphop" value="Hip Hop (twice a week)" onchange="updateFee()">
-                            <label style="margin-bottom: 0;" class="checkbox-inline" for="hiphop"></label>
-                            <span class="ml-2">Hip Hop, 4:14pm-6:30pm</span>
+                                <input type="radio" name="batch" id="hiphop" value="Hip Hop (twice a week)" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="hiphop"></label>
+                                <span class="ml-2">Hip Hop, 4:14pm-6:30pm</span>
+                            </div>
                         </div>
-                    </div>
 
 
 
 
 
-                `;
-        } else if (dayOfWeek === 2 || dayOfWeek === 5) { // Tuesday or Friday
-            classSelection.innerHTML = `
+                    `;
+            } else if (dayOfWeek === 2 || dayOfWeek === 5) { // Tuesday or Friday
+                classSelection.innerHTML = `
 
-                    <div class="col-md-12">
-                        <div class="form-group d-flex align-items-center">
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
 
-                            <input class="text-white" type="radio" id="KidsJazz" name="batch" value="Kids Jazz" onchange="updateFee()" aria-selected="true">
-                            <label style="margin-bottom: 0;" class="checkbox-inline" for="KidsJazz"></label>
-                            <span class="ml-2">Kids Jazz, 4:15pm-5:15pm</span>
+                                <input class="text-white" type="radio" id="KidsJazz" name="batch" value="Kids Jazz" onchange="updateFee()" aria-selected="true">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="KidsJazz"></label>
+                                <span class="ml-2">Kids Jazz, 4:15pm-5:15pm</span>
+                            </div>
                         </div>
-                    </div>
 
 
 
 
 
-                    <div class="col-md-12">
-                        <div class="form-group d-flex align-items-center">
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
 
-                            <input type="radio" name="batch" id="ballet" value="Ballet" onchange="updateFee()">
-                            <label style="margin-bottom: 0;" class="checkbox-inline" for="ballet"></label>
-                            <span class="ml-2">Ballet, 5:15pm-6:30pm</span>
+                                <input type="radio" name="batch" id="ballet" value="Ballet" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="ballet"></label>
+                                <span class="ml-2">Ballet, 5:15pm-6:30pm</span>
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="col-md-12">
-                        <div class="form-group d-flex align-items-center">
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
 
-                            <input type="radio" name="batch" id="modern" value="Modern" onchange="updateFee()">
-                            <label style="margin-bottom: 0;" class="checkbox-inline" for="modern"></label>
-                            <span class="ml-2">Modern, 7:45pm-9:00pm</span>
+                                <input type="radio" name="batch" id="modern" value="Modern" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="modern"></label>
+                                <span class="ml-2">Modern, 7:45pm-9:00pm</span>
+                            </div>
                         </div>
-                    </div>
 
 
 
 
 
-                `;
-        } else if (dayOfWeek === 1 || dayOfWeek === 4) { // Tuesday or Friday
-            classSelection.innerHTML = `
-                    <div class="col-md-12">
-                        <div class="form-group d-flex align-items-center">
+                    `;
+            } else if (dayOfWeek === 1 || dayOfWeek === 4) { // Tuesday or Friday
+                classSelection.innerHTML = `
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
 
-                            <input type="radio" name="batch" id="heels3" value="Heels (twice a week)" onchange="updateFee()">
-                            <label style="margin-bottom: 0;" class="checkbox-inline" for="heels3"></label>
-                            <span class="ml-2">Heels, 7:15pm-8:30pm</span>
+                                <input type="radio" name="batch" id="heels3" value="Heels (twice a week)" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="heels3"></label>
+                                <span class="ml-2">Heels, 7:15pm-8:30pm</span>
+                            </div>
                         </div>
-                    </div>
 
 
 
 
 
 
-                `;
-        } else { //
-            classSelection.innerHTML = `
-                    <div class="col-md-12">
-                        <div class="form-group d-flex align-items-center">
-                            <h4 style="color:white ;" >No classes for this day</h4>
+                    `;
+            } else { //
+                classSelection.innerHTML = `
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
+                                <h4 style="color:white ;" >No classes for this day</h4>
 
 
 
+                            </div>
                         </div>
-                    </div>
 
 
 
 
 
 
-                `;
+                    `;
+                }
+
+
+        } else if (studio === 'NDA') {
+            if (dayOfWeek === 0) { // Sunday
+                classSelection.innerHTML = `
+
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
+
+                                <input class="text-white" type="radio" id="Jazz1_weekend1" name="batch" value="Jazz 2 (Weekend)" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="Jazz2_weekend1"></label>
+                                <span class="ml-2">Jazz 2 (Weekend), 11:30am-2:00pm </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
+
+                                <input class="text-white" type="radio" id="Jazz1_weekend1" name="batch" value="Jazz 1 (Weekend)" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="Jazz1_weekend1"></label>
+                                <span class="ml-2">Jazz 1 (Weekend), 2:00pm-4:30pm </span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
+
+                                <input type="radio" name="batch" id="heels3" value="Heels (twice a week)" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="heels3"></label>
+                                <span class="ml-2">Heels, 2:00pm-3:15pm</span>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
+
+                                <input type="radio" name="batch" id="hiphop" value="Hip Hop (twice a week)" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="hiphop"></label>
+                                <span class="ml-2">Hip Hop, 4:14pm-6:30pm</span>
+                            </div>
+                        </div>
+
+
+
+
+
+                    `;
+            } else if (dayOfWeek === 2 || dayOfWeek === 5) { // Tuesday or Friday
+                classSelection.innerHTML = `
+
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
+
+                                <input class="text-white" type="radio" id="KidsJazz" name="batch" value="Kids Jazz" onchange="updateFee()" aria-selected="true">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="KidsJazz"></label>
+                                <span class="ml-2">Kids Jazz, 4:15pm-5:15pm</span>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
+
+                                <input type="radio" name="batch" id="ballet" value="Ballet" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="ballet"></label>
+                                <span class="ml-2">Ballet, 5:15pm-6:30pm</span>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
+
+                                <input type="radio" name="batch" id="modern" value="Modern" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="modern"></label>
+                                <span class="ml-2">Modern, 7:45pm-9:00pm</span>
+                            </div>
+                        </div>
+
+
+
+
+
+                    `;
+            } else if (dayOfWeek === 1 || dayOfWeek === 4) { // Tuesday or Friday
+                classSelection.innerHTML = `
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
+
+                                <input type="radio" name="batch" id="heels3" value="Heels (twice a week)" onchange="updateFee()">
+                                <label style="margin-bottom: 0;" class="checkbox-inline" for="heels3"></label>
+                                <span class="ml-2">Heels, 7:15pm-8:30pm</span>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                    `;
+            } else { //
+                classSelection.innerHTML = `
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center">
+                                <h4 style="color:white ;" >No classes for this day</h4>
+
+
+
+                            </div>
+                        </div>
+
+
+
+
+
+
+                    `;
+                }
+
+
+
+
+
+
+
+
+
             }
-
 
         // Show or hide based on available classes
         classSelection.style.display = classSelection.innerHTML.trim() !== '' ? 'block' : 'none';
