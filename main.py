@@ -269,7 +269,7 @@ def send_receipt(receiver_mail, rendered_html):
     smtp_port = 587
 
     inlined_html = transform(rendered_html)
-    print(inlined_html)
+    print("done")
     print("done1")
 
     msg = MIMEMultipart()
@@ -342,6 +342,11 @@ def serve_static(filename):
 def registration_form_dropin():
     return render_template('dropin.html')
 
+@app.route('/dropintest')
+def test_dropin():
+    return render_template("dropin_test.html")
+
+
 
 @app.route('/dropinbatch', methods=['GET', 'POST'])
 def select_dropin():
@@ -351,9 +356,9 @@ def select_dropin():
     session['phone'] = request.form['phone']
     session['email'] = request.form['email']
     session['studio'] = request.form['Studio']
-    studio = session.get('studio')
+    dropin_studio = session.get('studio')
 
-
+    print(dropin_studio)
 
     # elif studio in ["Gurgaon", "South Delhi", "Indirapuram"]:
     #     batch_scenario = "heels_once"
@@ -362,7 +367,7 @@ def select_dropin():
     #     batch_scenario = "once"
 
 
-    return render_template('selectdropin.html', dropin_studio=studio,
+    return render_template('selectdropin.html', dropin_studio=dropin_studio,
                            three_months_validty="true", grid_validity="true")
 
 
@@ -611,6 +616,7 @@ def payment_successful():
     # thread.start()
     send_receipt_background()
     print("recipt sent")
+
 
 
     return render_template("success.html")

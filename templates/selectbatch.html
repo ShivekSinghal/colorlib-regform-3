@@ -72,6 +72,7 @@
       var feeField = document.getElementById("feeField");
       var selectedBatches = Array.from(document.querySelectorAll('input[name="batch[]"]:checked')).map(checkbox => checkbox.value);
       var no_of_batches = selectedBatches.length;
+      console.log("function called");
 
       // Define the fees dictionary
       var three_months_fees = {
@@ -263,8 +264,8 @@
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
                                 <select class="custom-select" name="validity" onchange="updateFee()" required>
-                                    <option disabled="disabled" selected="selected" value="">Validity</option>
-                                    <option  value="three_months">December, January, February</option>
+<!--                                    <option disabled="disabled" selected="selected" value="">Validity</option>-->
+                                    <option  value="three_months" selected="selected">December, January, February</option>
 <!--                                    <option  value="grid">Grid</option>-->
 
 
@@ -367,14 +368,25 @@
 
 
 
+
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
+    <script>
+
+
+
+
+
+    </script>
 
     <!-- Main JS-->
     <script src="js/global.js"></script>
+
+
 
 </body>
