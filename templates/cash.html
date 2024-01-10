@@ -49,11 +49,11 @@
             <div class="card card-3">
                 <div class="card-heading"></div>
                 <div class="card-body">
-                    <h1 class="title">Pay cash at {{studio}} studio</h1>
+                    <h1 class="title">Pay cash at {{full_studio}} studio</h1>
                     <div style="padding-bottom: 20px; font-family: 'Montserrat', sans-serif;">
                         <a style="color : #ff007f;" href="tel:+918527805203">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 120 120" id="phone"><defs><linearGradient id="b" x1="50%" x2="50%" y1="0%" y2="100%"><stop offset="0%" stop-color="#91FC8A"></stop><stop offset="100%" stop-color="#00DD35"></stop></linearGradient><rect id="a" width="120" height="120" x="0" y="0" rx="28"></rect></defs><g fill="none" fill-rule="evenodd"><mask id="c" fill="#fff"><use xlink:href="#a"></use></mask><use fill="url(#b)" xlink:href="#a"></use><path fill="#FFF" d="M56 47.5v13H46c-6.09 0-9.5 1.5-10.5 9.5 0 2-.5 5-3.5 6l-16 3c-5 .5-6.453-.504-7.5-3C2.005 60.511 18 48 56 47.5zm0 0c38 .5 53.995 13.011 47.5 28.5-1.047 2.496-2.5 3.5-7.5 3l-16-3c-3-1-3.5-4-3.5-6-1-8-4.41-9.5-10.5-9.5H56v-13z" mask="url(#c)" transform="rotate(-135 56 63.312)"></path></g>
-                            </svg> {{wingperson}} (Wingperson of {{studio}})</a>
+                            </svg> {{wingperson}} (Wingperson of {{full_studio}})</a>
 
 
 
@@ -61,7 +61,7 @@
 
                     <div style="padding-bottom: 20px; font-family: 'Montserrat', sans-serif;">
                         <a style="color : #ff007f;" href={{location}}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 64 64" id="location"><path fill="#e3e2e1" d="M54.01 58.74C54.01 61.65 44.15 64 32 64c-12.15 0-22.01-2.35-22.01-5.26 0-2.6 7.9-4.74 18.26-5.18h7.5c10.37.44 18.26 2.58 18.26 5.18z"></path><path fill="#e82327" d="M32 0C20.7 0 11.54 9.15 11.54 20.45 11.54 31.75 32 58.74 32 58.74s20.45-26.99 20.45-38.29S43.3 0 32 0zm0 33.99c-7.48 0-13.54-6.06-13.54-13.54S24.52 6.91 32 6.91c7.48 0 13.54 6.06 13.54 13.54S39.48 33.99 32 33.99z"></path>
-                        </svg> #Hashtag {{studio}}</a>
+                        </svg> #Hashtag {{full_studio}}</a>
 
                     </div>
 
@@ -72,25 +72,25 @@
                                 <h4 style="color : white; padding-bottom: 15px;">Amount Payable : <span style="color: #ff007f;"> ₹ {{fee}}</span></h4>
                                 <select class="custom-select" id="name" name="wingperson_name" required>
                                   <option value="">Wingperson Name</option>
-                                  {% if studio == "Noida" %}
+                                  {% if studio == "NDA" %}
                                   <option value="Priyanshi" selected>Priyanshi</option>
                                   {% endif %}
-                                  {% if studio == "Rajouri Garden" %}
+                                  {% if studio == "RG" %}
                                   <option value="Kajal" selected>Kajal</option>
                                   {% endif %}
-                                  {% if studio == "Pitampura" %}
+                                  {% if studio == "PP" %}
                                   <option value="Rubani" selected>Rubani</option>
                                   {% endif %}
-                                  {% if studio == "South Delhi" %}
+                                  {% if studio == "SD" %}
                                   <option value="Jhilmil" selected>Jhilmil</option>
                                   {% endif %}
-                                  {% if studio == "Gurgaon" %}
+                                  {% if studio == "GGN" %}
                                   <option value="Jahnvi" selected>Jahnvi</option>
                                   {% endif %}
-                                  {% if studio == "East Delhi" %}
+                                  {% if studio == "ED" %}
                                   <option value="Muskan" selected>Muskan</option>
                                   {% endif %}
-                                  {% if studio == "Indirapuram" %}
+                                  {% if studio == "IPM" %}
                                   <option value="Tarun" selected>Tarun</option>
                                   {% endif %}
 

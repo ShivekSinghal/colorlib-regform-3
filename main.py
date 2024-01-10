@@ -74,33 +74,45 @@ def load_promo_data(filename):
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 def get_studio_wingperson(studio):
-    if studio == "Noida":
+    if studio == "NDA":
         wingperson = "Priyanshi"
         return wingperson
-    if studio == "Rajouri Garden":
+    if studio == "RG":
         wingperson = "Kajal"
         return wingperson
 
-    if studio == "Pitampura":
+    if studio == "PP":
         wingperson = "Rubani"
         return wingperson
 
-    if studio == "South Delhi":
+    if studio == "SD":
         wingperson = "Jhilmil"
         return wingperson
 
-    if studio == "East Delhi":
+    if studio == "ED":
         wingperson = "Muskan"
         return wingperson
 
-    if studio == "Gurgaon":
+    if studio == "GGN":
         wingperson = "Jahnvi"
         return wingperson
 
-    if studio == "Indirapuram":
+    if studio == "IPM":
         wingperson = "Tarun"
         return wingperson
 
+
+def return_studio_fullform(studio):
+    studio_dic = {
+        "ED": "East Delhi",
+        "NDA": "Noida",
+        "RG": "Rajouri Garden",
+        "SD": "South Delhi",
+        "GGN": "Gurgaon",
+        "PP": "Pitampura",
+        "IPM": "Indirapuram"
+    }
+    return studio_dic[studio]
 
 
 def get_studio_location(studio):
@@ -262,10 +274,10 @@ from email.mime.text import MIMEText
 
 
 def send_receipt(receiver_mail, rendered_html):
-    my_email = "universal@hashtag.dance"
-    password = 'nnmzpvnfimvoqgjk'
+    my_email = "singhalshivek24@gmail.com"
+    password = 'yhczvwbgkmdbkdgm'
     smtp_server = "smtp.gmail.com"
-    email_subject = "Registration Receipt Grid 2.0 '23"
+    email_subject = "Registration Receipt Feb'24"
     smtp_port = 587
 
     inlined_html = transform(rendered_html)
@@ -512,7 +524,7 @@ def cash_payment():
     session['wingperson'] = get_studio_wingperson(studio)
     fee = session.get('fee')
 
-    return render_template('cash.html',studio=studio, fee=fee, wingperson=session.get('wingperson'), location=get_studio_location(studio=studio))
+    return render_template('cash.html',studio=studio, full_studio=return_studio_fullform(studio), fee=fee, wingperson=session.get('wingperson'), location=get_studio_location(studio=studio))
 
 
 
@@ -640,5 +652,5 @@ def payment_failed():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=4915)
+    app.run(debug=True, port=4911)
 
