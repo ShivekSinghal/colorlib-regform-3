@@ -52,9 +52,9 @@ sheet_name = os.environ.get('SHEET_NAME')
 # PROMO CODE HANDLER
 
 
-def generate_random_promo_code(length=8):
+def generate_random_promo_code(length=8 ):
     characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
-    return ''.join(random.choice(characters) for _ in range(length))
+    return f"Hashtag{''.join(random.choice(characters) for _ in range(length))}"
 
 
 def load_promo_data(filename):
@@ -368,7 +368,13 @@ def select_dropin():
     session['phone'] = request.form['phone']
     session['email'] = request.form['email']
     session['studio'] = request.form['Studio']
+
+    today_date = datetime.today().strftime('%d-%b-%Y %H:%M:%S')
     dropin_studio = session.get('studio')
+    sheet = client.open_by_key(sheet_key).worksheet("Payment_Incomplete(DropIn)")
+    dropin_data = [today_date, session.get('name'), session.get('phone'), session.get('email'), session.get('studio')]
+
+    sheet.append_row(dropin_data)
 
     print(dropin_studio)
 
@@ -404,6 +410,13 @@ def select_batch():
     name = session.get('name')
     phone = session.get('phone')
     email = session.get('email')
+
+    today_date = datetime.today().strftime('%d-%b-%Y %H:%M:%S')
+    sheet = client.open_by_key(sheet_key).worksheet("Payment_Incomplete")
+    registration_data = [today_date, session.get('name'), session.get('phone'), session.get('email'), session.get('studio')]
+
+    sheet.append_row(registration_data)
+
     promo_code_applied = session.get('promo_code_applied')
     batch_scenario = ""
     if session.get('studio') in ["Noida", "Rajouri Garden", "Pitampura", "Gurgaon", "South Delhi"]:
@@ -435,6 +448,8 @@ def select_batch():
 
 @app.route('/payment-method', methods=['GET', 'POST'])
 def make_payment():
+
+
 
 
       # Replace with your own logic to generate a unique order receipt ID
@@ -615,7 +630,7 @@ def payment_successful():
 
     def send_receipt_background():
         rendered_receipt = render_template("receipt2.html", date=today_date, name=name, batch=batch_str, phone=phone,
-                                           validity='Septmber, October, Grid', email=email, studio=studio, gross_amount=gross_amount,
+                                           validity='September, October, Grid', email=email, studio=studio, gross_amount=gross_amount,
                                            gst=gst, fee=fee, order_receipt=f"#{str(order_receipt)}",
                                            mode_of_payment="Bank Transfer", paid_to="Pink Grid", hashtag_logo=hashtag_logo,
                                            watermark=hashtag_watermark, promo_code=promo_code_created)
@@ -627,7 +642,7 @@ def payment_successful():
     # thread = threading.Thread(target=send_receipt_background)
     # thread.start()
     send_receipt_background()
-    print("recipt sent")
+    print("receipt sent")
 
 
 
@@ -652,5 +667,5 @@ def payment_failed():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=4911)
+    app.run(debug=True, port=4915)
 

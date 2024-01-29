@@ -76,7 +76,7 @@
 
       // Define the fees dictionary
       var three_months_fees = {
-        "Any1": 8050,
+        "Any1": 8050.85,
         "Any2": 15134,
         "Any3": 22134,
         "Any4": 29061,
@@ -219,6 +219,7 @@
 
       }
     }
+
     function enableBatchCheckboxes() {
       var validitySelect = document.getElementsByName("validity")[0];
       var batchCheckboxes = document.getElementsByName("batch[]");
@@ -289,7 +290,7 @@
 <!--                                    <h4 style="color : #ffffff; padding : 0px 0px 20px 15px;">Batch :</h4>-->
                                         <div class="col-md-12">
                                             <div class="form-group d-flex align-items-center" >
-                                                <input class="custom-checkbox" type="checkbox" checked="checked" id="jazzcheckbox" name="batch[]" value="Jazz" aria-required="true"  onchange="updateFee()">
+                                                <input class="custom-checkbox" type="checkbox" id="jazzcheckbox" name="batch[]" value="Jazz" aria-required="true"  onchange="updateFee()">
 
                                                 <label class="checkbox-inline" for="jazzcheckbox">
                                                 </label>
@@ -357,7 +358,7 @@
 
 
                         <div class="p-t-10">
-                            <button class="btn btn--pill btn--hotpink btn--hotpink:hover" type="submit" style="margin-left: 30px;" onclick="validateForm()" >Next</button>
+                            <button class="btn btn--pill btn--hotpink btn--hotpink:hover" id="next-button" disabled type="submit" style="margin-left: 30px;" onclick="validateForm()" >Next</button>
                         </div>
 
 
@@ -377,9 +378,15 @@
     </div>
 
     <script>
+        const checkboxes = document.querySelectorAll('input[type=checkbox]');
+        const nextButton = document.getElementById('next-button');
 
-
-
+        checkboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+            const isChecked = Array.from(checkboxes).some(cb => cb.checked);
+            nextButton.disabled = !isChecked;
+          });
+        });
 
 
     </script>
