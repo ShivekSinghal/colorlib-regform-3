@@ -48,7 +48,7 @@ os.environ['TARUN_PASSWORD'] = "tarun_password"
 sheet_key = os.environ.get('SHEET_KEY')
 sheet_name = os.environ.get('SHEET_NAME')
 
-
+print(sheet_key)
 # PROMO CODE HANDLER
 
 
@@ -101,6 +101,40 @@ def get_studio_wingperson(studio):
         wingperson = "Tarun"
         return wingperson
 
+
+def return_studio_payment(studio):
+    payment_link = ""
+    if studio == "NDA":
+        payment_link = ""
+        return payment_link
+        return wingperson
+    if studio == "RG":
+        payment_link = ""
+        return payment_link
+
+    if studio == "PP":
+        payment_link = ""
+        return payment_link
+
+    if studio == "SD":
+        payment_link = ""
+        return payment_link
+
+    if studio == "ED":
+        payment_link = "https://rzp.io/rzp/6xZeqbp"
+        return payment_link
+
+    if studio == "GGN":
+        payment_link = ""
+        return payment_link
+
+    if studio == "IPM":
+        payment_link = ""
+        return payment_link
+
+    if studio == "RMG":
+        payment_link = ""
+        return payment_link
 
 def return_studio_fullform(studio):
     studio_dic = {
@@ -410,40 +444,45 @@ def select_batch():
     name = session.get('name')
     phone = session.get('phone')
     email = session.get('email')
+    studio = session.get('studio')
 
     today_date = datetime.today().strftime('%d-%b-%Y %H:%M:%S')
-    sheet = client.open_by_key(sheet_key).worksheet("Payment_Incomplete")
+    sheet = client.open_by_key("1cJdiWjKzOMK6kVkPWBfhBVGTy_bsxDBwDbwlagkQfY4").worksheet("Payment_Incomplete")
+    print("Done")
     registration_data = [today_date, session.get('name'), session.get('phone'), session.get('email'), session.get('studio')]
-
     sheet.append_row(registration_data)
-
-    promo_code_applied = session.get('promo_code_applied')
-    batch_scenario = ""
-    if session.get('studio') in ["Noida", "Rajouri Garden", "Pitampura", "Gurgaon", "South Delhi"]:
-        batch_scenario = "twice"
+    return redirect(return_studio_payment(studio))
 
 
-    elif session.get('studio') in ["Indirapuram"]:
-        batch_scenario = "no_modern"
 
-    else:
-        batch_scenario = "once"
 
-    promo_data = load_promo_data("promo_data.json")
-    if promo_data is not None:
-        discount = int(apply_promo_code(name, email, phone, promo_code_applied, filename="promo_code.json"))
-        if promo_code_applied == "":
-            discount = 0
-            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount)
-
-        if discount > 0:
-            print(discount)
-
-            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount,
-                                   promo_message=f"Promo Code worth {discount} applied successfully")
-        if discount == 0:
-            return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount,
-                                   promo_message=f"Promo Code expired or invalid user details")
+    # promo_code_applied = session.get('promo_code_applied')
+    # batch_scenario = ""
+    # if session.get('studio') in ["Noida", "Rajouri Garden", "Pitampura", "Gurgaon", "South Delhi"]:
+    #     batch_scenario = "twice"
+    #
+    #
+    # elif session.get('studio') in ["Indirapuram"]:
+    #     batch_scenario = "no_modern"
+    #
+    # else:
+    #     batch_scenario = "once"
+    #
+    # promo_data = load_promo_data("promo_data.json")
+    # if promo_data is not None:
+    #     discount = int(apply_promo_code(name, email, phone, promo_code_applied, filename="promo_code.json"))
+    #     if promo_code_applied == "":
+    #         discount = 0
+    #         return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount)
+    #
+    #     if discount > 0:
+    #         print(discount)
+    #
+    #         return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount,
+    #                                promo_message=f"Promo Code worth {discount} applied successfully")
+    #     if discount == 0:
+    #         return render_template('selectbatch.html', batch_scenario=batch_scenario, discount=discount,
+    #                                promo_message=f"Promo Code expired or invalid user details")
 
 
 @app.route('/payment-method', methods=['GET', 'POST'])
@@ -670,5 +709,5 @@ def payment_failed():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=4900)
 
